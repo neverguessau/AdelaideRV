@@ -1,0 +1,8 @@
+body#tinymce {
+    background-color: rgb(240, 240, 240)
+}
+
+.owl-carousel {
+    display: flex;
+    justify-content: center;
+}
