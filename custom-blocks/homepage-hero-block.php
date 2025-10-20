@@ -1,0 +1,578 @@
+<?php 
+    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+
+    $args = array(  
+    'post_type' => 'listings',
+    'post_status' => 'publish',
+    'posts_per_page' => 4, 
+    'orderby' => 'date', 
+    'order' => 'ASC', 
+    'paged' => $paged,
+    );
+
+    $loop = new WP_Query( $args ); 
+?>
+
+
+<?php 
+    $brands = get_terms([
+        'taxonomy' => 'make',
+        'hide_empty' => true
+    ]);
+
+
+// Get all posts of your custom post type
+$posts = get_posts(array(
+    'post_type' => 'listings',
+    'posts_per_page' => -1, // Retrieve all posts
+));
+
+// Initialize an array to store the ACF Year field values
+$year_values = array();
+
+// Loop through the posts and retrieve the ACF Year field value
+foreach ($posts as $post) {
+    // $year_value = get_field('year');
+      the_field('year');
+    } 
+    wp_reset_postdata();
+ ?>
+
+
+<!-- /////////////////// -->
+<?php
+// Initialize an empty array to store the custom field values
+$customFieldValues = array();
+
+$args = array(
+    'post_type' => 'listings', // Change to your custom post type if applicable
+    'posts_per_page' => -1, // Retrieve all posts
+);
+
+$query = new WP_Query($args);
+
+if ($query->have_posts()) :
+    while ($query->have_posts()) :
+        $query->the_post();
+
+        // Get the value of the custom field
+        $customFieldValue = get_field('year');
+
+        // Add the value to the array
+        $customFieldValues[] = $customFieldValue;
+    endwhile;
+endif;
+
+// Restore the global post data
+wp_reset_postdata();
+
+// Now $customFieldValues contains all the values of the custom field from all posts
+ // print_r($customFieldValues); // Output the array
+?>
+
+<!-- /////////////////// -->
+
+<style>
+
+    /*.brands-search.mobile.aos-init.aos-animate {
+        display: none;
+    }
+
+    .homepage-hero .hero-content-wrapper h1 {
+        color: #FFF;
+        !* font-family: "FONTSPRING DEMO - Obvia"; *!
+        font-size: 60px;
+        font-style: normal;
+        font-weight: 900;
+        line-height: 72px;
+        max-width: 726px;
+        text-align: left;
+    }*/
+    #homepage-slider > div.owl-nav.disabled.container {
+        display: none;
+    }
+    .brands-search-form .form-group {
+        width: 100%;
+    }
+    .hero-content-wrapper {
+        display: flex;
+    }
+    .homepage-hero .brand-search-wrapper {
+        top: 68%;
+    }
+    .homepage-hero .slider .item {
+        height: 70vh;
+    }
+
+    form#brands-search-form {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        border-radius: 30px;
+        background: #577B59;
+        border: none;
+        padding: 30px 20px;
+    }
+
+    form#brands-search-form select {
+        border-radius: 48px;
+        background: #FFF;
+        padding: 15px 20px;
+        color: #000;
+        font-size: 20px;
+    }
+
+    form#brands-search-form button {
+        border-radius: 38px;
+        background: #000;
+        border: none;
+        padding: 15px 20px;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .brands-search-form .form-group {
+        width: 100%;
+    }
+
+    form#brands-search-form > :last-child {
+        grid-column: 1 / -1;
+        width: 100%;
+    }
+
+    .homepage-hero .brand-search-wrapper .usp-container {
+        display: flex;
+        flex-direction: row;
+        margin-top: 63px;
+    }
+
+    .homepage-hero .brand-search-wrapper .usp-container .usp-item {
+        width: 25%;
+        padding: 0 50px;
+        color: #fff;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .homepage-hero .brand-search-wrapper .usp-container .usp-item:not(:last-child) {
+        border-right: 1px solid #fff;
+    }
+
+    .homepage-hero .brand-search-wrapper .usp-container .usp-item h4 {
+        color: #FFF;
+        /* font-family: "FONTSPRING DEMO - Obvia"; */
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 900;
+        line-height: normal;
+        margin: 12px 0 10px;
+    }
+
+    .homepage-hero .brand-search-wrapper .usp-container .usp-item p {
+        color: #FFF;
+        text-align: center;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+</style>
+<section class="homepage-hero">
+
+    <div id="homepage-slider" class="owl-carousel slider">
+
+        <?php if( have_rows('slides') ) { ?>
+            <?php while( have_rows('slides') ): the_row(); ?>
+                <div class="item">
+                    <img src="<?php the_sub_field('background_image'); ?>" alt="slide">
+                </div>
+            <?php endwhile; ?>
+           
+        <?php } else { ?>
+            <div class="item">
+                <img src="<?php echo get_template_directory_uri() ?>/img/hero-slide-1.webp" alt="slide">
+            </div>
+        <?php } ?>
+
+
+<!-- 
+        <div class="item">
+            <img src="<?php //echo get_template_directory_uri() ?>/img/hero-slide-1.webp" alt="slide">
+        </div>
+        <div class="item">
+            <img src="<?php //echo get_template_directory_uri() ?>/img/hero-slide-2.webp" alt="slide">
+        </div>
+        <div class="item">
+            <img src="<?php //echo get_template_directory_uri() ?>/img/hero-slide-3.webp" alt="slide">
+        </div> -->
+
+    </div>
+
+
+    <div class="brand-search-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="hero-content-wrapper">
+                    <h1 data-aos="fade-down"><?php the_field('heading') ?></h1>
+
+                    <div class="brands-search mobile" data-aos="fade-down">
+                        <a class="search-btn">Search Items</a>
+                    </div>
+                      
+                    <form id="brands-search-form" action="<?php echo home_url('/our-stock') ?>" class="brands-search-form desktop form-control" data-aos="fade-down">
+                    
+                        <div class="form-group">
+                            <select name="make" id="make" class="form-control">
+                                <option value="" selected>Make</option>
+                                <?php 
+                                    foreach ($brands as $brand) { ?>
+                                    <option value="_make-<?php echo $brand->slug?>"><?php echo $brand->name?></option>
+                                <?php }?>
+                                
+                            </select>
+                        </div><!-- end group -->
+
+
+                    <!-- <div class="form-group">
+                        <select class="form-control">
+                            <option value="" selected>Select Brand</option>                            
+                        </select> -->
+                    <!-- </div> --> <!-- end group -->
+
+
+                    <div class="form-group">
+                        <select name="body" id="body" class="form-control">
+                            <option value="" selected>Body Type</option>   
+                            <option value="_body-camper-trailer">Camper Trailer</option>                           
+                            <option value="_body-caravan" >Caravan</option>                           
+                            <option value="_body-hybrid" >Hybrid</option>                           
+                            <option value="_body-poptop" >Pop Top</option>                           
+                            <option value="_body-pop-top-hybrid" >Pop Top Hybrid</option>                           
+                        </select>
+                    </div><!-- end group -->
+
+                    <div class="form-group">
+                        <select name="sleeps" id="sleeps" class="form-control">
+                            <option value="" selected>Sleeps</option>
+                            <option value="_sleeps-2">2</option>   
+                            <option value="_sleeps-3">3</option>   
+                            <option value="_sleeps-4">4</option>   
+                            <option value="_sleeps-5">5</option>                                
+                            <option value="_sleeps-6">6</option>                                
+                            <option value="_sleeps-7">7</option>                                
+                        </select>
+                    </div><!-- end group -->
+
+                    <div class="form-group">
+                        <select name="price" id="price" class="form-control">
+                            <option value="" selected>Price Range</option>
+                            <option value="30000">$30,000</option>   
+                            <option value="40000">$40,000</option>   
+                            <option value="50000">$50,000</option>   
+                            <option value="60000">$60,000</option>   
+                            <option value="70000">$70,000</option>   
+                            <option value="80000">$80,000</option>   
+                            <option value="90000">$90,000</option>   
+                            <option value="100000">$100,000</option>   
+                        </select>
+                    </div><!-- end group -->
+
+                        <button type="submit">Search Items</button>
+
+                    </form>
+                </div><!-- end col -->
+            </div><!-- end row -->
+            <div class="row usp-container" data-aos="fade-up">
+                <div class="usp-item" data-aos="fade-up">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none">
+                        <g clip-path="url(#clip0_3_64)">
+                            <mask id="mask0_3_64" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="50" height="50">
+                                <path d="M0 7.62939e-06H50V50H0V7.62939e-06Z" fill="white"/>
+                            </mask>
+                            <g mask="url(#mask0_3_64)">
+                                <path d="M17.5185 37.2863L10.5868 32.0944C8.65522 30.6477 7.37749 28.4928 7.03472 26.104L6.73071 23.9863" stroke="white" stroke-width="2.92969" stroke-miterlimit="10"/>
+                                <path d="M7.21094 27.0057C6.48829 21.9993 5.10079 14.6883 3.17911 14.8792C0.263679 15.1687 1.94991 29.2166 1.94991 29.2166C2.91075 36.0203 16.1133 42.6758 16.1133 48.5352H25.0785V37.977C24.6886 36.036 23.7564 34.2094 21.8015 32.7451C9.02686 23.9936 9.20997 31.063 11.8578 33.0463" stroke="white" stroke-width="2.92969" stroke-miterlimit="10"/>
+                                <path d="M32.5598 37.2863L39.4916 32.0944C41.4231 30.6477 42.6223 28.4928 42.9652 26.104L43.2691 23.9863" stroke="white" stroke-width="2.92969" stroke-miterlimit="10"/>
+                                <path d="M25 37.9769C25.3899 36.036 26.3222 34.2093 28.2771 32.7451C41.0517 23.9935 40.8686 31.063 38.2207 33.0463" stroke="white" stroke-width="2.92969" stroke-miterlimit="10"/>
+                                <path d="M42.7891 27.0057C43.5117 21.9993 44.8992 14.6883 46.8209 14.8792C49.7363 15.1687 48.0501 29.2166 48.0501 29.2166C47.0893 36.0203 33.8867 42.6758 33.8867 48.5352H25" stroke="white" stroke-width="2.92969" stroke-miterlimit="10"/>
+                                <path d="M39.7461 10.3516C39.7461 17.1777 33.0859 18.9355 25 25.9375C17.6758 19.5802 10.2539 17.3242 10.2539 10.3516C10.2539 5.48838 14.1798 1.46484 19.043 1.46484C21.4454 1.46484 23.6522 2.871 25 5.03896C26.3478 2.871 28.5546 1.46484 30.957 1.46484C35.8202 1.46484 39.7461 5.48838 39.7461 10.3516Z" stroke="white" stroke-width="2.92969" stroke-miterlimit="10"/>
+                                <path d="M25 8.78906V17.6758" stroke="white" stroke-width="2.92969" stroke-miterlimit="10"/>
+                                <path d="M20.6055 13.2812H29.3945" stroke="white" stroke-width="2.92969" stroke-miterlimit="10"/>
+                            </g>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_3_64">
+                                <rect width="50" height="50" fill="white"/>
+                            </clipPath>
+                        </defs>
+                    </svg>
+                    <h4>We are Passionate</h4>
+                    <p>Pursuing excellence in every action</p>
+                </div>
+                <div class="usp-item" data-aos="fade-up">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none">
+                        <g clip-path="url(#clip0_3_168)">
+                            <path d="M47.8435 33.9921C48.8682 32.6851 49.3596 31.284 49.2969 29.8411C49.2342 28.2518 48.5232 27.0075 47.9376 26.2442C48.6173 24.5504 48.8787 21.8841 46.6097 19.8139C44.9473 18.2978 42.1242 17.6182 38.2137 17.8064C35.4638 17.9318 33.1635 18.4442 33.0694 18.4651H33.0589C32.5361 18.5592 31.982 18.6742 31.4174 18.7997C31.3755 18.1305 31.4906 16.468 32.7243 12.7248C34.1882 8.2706 34.1045 4.86198 32.4525 2.5826C30.7168 0.188206 27.946 0 27.1305 0C26.3463 0 25.6248 0.324132 25.1125 0.920117C23.9519 2.26892 24.0878 4.75742 24.2342 5.90757C22.854 9.60895 18.9853 18.6847 15.7126 21.2045C15.6499 21.2463 15.5976 21.2986 15.5453 21.3509C14.5834 22.3651 13.9351 23.463 13.496 24.4249C12.8791 24.0903 12.1785 23.9021 11.4257 23.9021H5.04764C2.64279 23.9021 0.697998 25.8574 0.697998 28.2518V45.2426C0.697998 47.6474 2.65325 49.5922 5.04764 49.5922H11.4257C12.3563 49.5922 13.2241 49.2995 13.9351 48.7976L16.3923 49.0903C16.7687 49.1426 23.4604 49.9895 30.33 49.8536C31.5742 49.9477 32.7453 50 33.8327 50C35.7043 50 37.3354 49.8536 38.6947 49.5609C41.8941 48.8812 44.0794 47.522 45.1877 45.5249C46.0347 43.9983 46.0347 42.4822 45.8988 41.5203C47.9795 39.6382 48.3454 37.5575 48.2722 36.0937C48.2304 35.2468 48.0422 34.5253 47.8435 33.9921ZM5.04764 46.7691C4.20072 46.7691 3.52108 46.079 3.52108 45.2426V28.2413C3.52108 27.3944 4.21117 26.7148 5.04764 26.7148H11.4257C12.2727 26.7148 12.9523 27.4049 12.9523 28.2413V45.2321C12.9523 46.079 12.2622 46.7587 11.4257 46.7587H5.04764V46.7691ZM45.1668 32.7687C44.7277 33.2288 44.644 33.9293 44.9786 34.473C44.9786 34.4835 45.4073 35.2154 45.4596 36.2192C45.5328 37.5889 44.8741 38.8018 43.4939 39.8369C43.0025 40.2133 42.8038 40.8616 43.0129 41.4471C43.0129 41.4575 43.4625 42.8377 42.7306 44.1447C42.0301 45.3994 40.4722 46.2986 38.1091 46.8005C36.2166 47.2083 33.6445 47.2815 30.4868 47.0305C30.445 47.0305 30.3927 47.0305 30.3404 47.0305C23.6173 47.1769 16.821 46.2986 16.7478 46.2882H16.7373L15.6813 46.1627C15.744 45.8699 15.7754 45.5563 15.7754 45.2426V28.2413C15.7754 27.7917 15.7022 27.3526 15.5767 26.9448C15.7649 26.2442 16.2877 24.6863 17.5215 23.3584C22.2162 19.6361 26.8063 7.07863 27.005 6.53492C27.0886 6.31535 27.1095 6.07486 27.0677 5.83438C26.89 4.66332 26.9527 3.23087 27.2036 2.80217C27.7578 2.81263 29.253 2.96947 30.1522 4.21372C31.2187 5.688 31.1769 8.32288 30.0267 11.8151C28.2701 17.1372 28.1238 19.9394 29.5144 21.1731C30.2045 21.79 31.1246 21.8214 31.7938 21.5809C32.4316 21.4345 33.038 21.3091 33.6131 21.215C33.6549 21.2045 33.7072 21.1941 33.749 21.1836C36.959 20.4831 42.7097 20.0544 44.7068 21.8737C46.4006 23.4212 45.1982 25.4705 45.0623 25.6901C44.6754 26.2756 44.7904 27.0389 45.3132 27.5094C45.3237 27.5199 46.4215 28.555 46.4738 29.9456C46.5156 30.8762 46.0765 31.8277 45.1668 32.7687Z" fill="white"/>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_3_168">
+                                <rect width="50" height="50" fill="white"/>
+                            </clipPath>
+                        </defs>
+                    </svg>
+                    <h4>We are Responsible</h4>
+                    <p>We own our attitude and are adaptable in our actions</p>
+                </div>
+                <div class="usp-item" data-aos="fade-up">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none">
+                        <path d="M45.3748 28.9011L44.0785 28.6262L35.5811 14.491L35.8939 13.2468L47.8232 6.13806L48.75 7.69353L37.602 14.3374L45.1302 26.8605L47.4806 25.2125L48.5206 26.6953L45.3748 28.9011Z" fill="white"/>
+                        <path d="M4.62524 28.9011L1.47943 26.6953L2.51944 25.2125L4.86983 26.8605L12.3981 14.3374L1.25 7.69353L2.17681 6.13806L14.1061 13.2468L14.419 14.491L5.92147 28.6262L4.62524 28.9011Z" fill="white"/>
+                        <path d="M38.418 35.0527C37.9207 35.0527 37.4265 34.9264 36.9883 34.6873L29.6572 30.7122L30.5203 29.1204L37.854 33.0965C38.3402 33.3608 38.9673 33.2385 39.315 32.8266C39.6702 32.4062 39.6884 31.7826 39.3574 31.3449C39.3023 31.2762 39.2417 31.212 39.179 31.1595L32.9228 25.876L26.6352 21.9742C26.1774 21.6902 25.6139 21.6169 25.0929 21.7736L23.1094 22.376L20.9727 24.7218C20.1758 25.5981 19.0367 26.1009 17.8471 26.1009C17.3585 26.1009 16.8774 26.017 16.4175 25.8513C15.7115 25.5991 15.1541 25.0498 14.8908 24.3443C14.6265 23.6373 14.6877 22.8545 15.0581 22.1971L18.1408 16.7266L18.6522 16.3082C21.6529 15.3389 24.6835 14.7244 27.9183 14.4298L28.2286 14.4556L35.0003 16.2213L37.3451 15.3415L37.9808 17.0374L35.3677 18.0178L34.8214 18.0461L27.9254 16.2481C25.006 16.5245 22.2589 17.0738 19.5456 17.9243L16.6358 23.086C16.4888 23.3477 16.5423 23.5893 16.5873 23.7106C16.6323 23.8304 16.749 24.0461 17.029 24.1462C17.9411 24.4752 18.9918 24.2079 19.6331 23.5029L21.938 20.9721L22.3443 20.7154L24.5698 20.0392C25.5911 19.734 26.6903 19.8785 27.5893 20.4344L34.0406 24.4494L40.3454 29.7738C40.4995 29.9032 40.6456 30.0548 40.7891 30.2357C41.6527 31.3773 41.6103 32.9171 40.6981 33.9965C40.1296 34.6681 39.2988 35.0527 38.418 35.0527Z" fill="white"/>
+                        <path d="M40.6137 31.5298L39.5454 30.0674C41.0018 29.0041 42.2955 27.7544 43.3911 26.353L44.8182 27.4688C43.6196 29.0016 42.2046 30.368 40.6137 31.5298Z" fill="white"/>
+                        <path d="M35.5109 38.3769C35.0263 38.3769 34.5401 38.2525 34.105 38.0181L27.1443 34.2684L28.0034 32.6735L34.9651 36.4237C35.4467 36.6849 36.0344 36.5637 36.3821 36.1649C36.5858 35.9299 36.6838 35.6267 36.656 35.3139C36.6287 35.0011 36.4791 34.7196 36.2351 34.522L35.2769 33.7413L36.421 32.3374L37.3771 33.1167C38.0038 33.624 38.3889 34.3482 38.4601 35.1542C38.5314 35.9603 38.2792 36.7415 37.7496 37.353C37.1816 38.0044 36.3664 38.3769 35.5109 38.3769Z" fill="white"/>
+                        <path d="M32.734 41.4237C32.3358 41.4237 31.93 41.3343 31.5596 41.1645L24.8379 38.0424L25.601 36.4L32.3181 39.5201C32.7097 39.6984 33.1843 39.5989 33.4607 39.2937C33.82 38.9005 33.8038 38.3027 33.4263 37.9307L32.83 37.34L34.1045 36.0533L34.6988 36.6421C35.7722 37.6988 35.8172 39.3998 34.7999 40.5136C34.2753 41.0912 33.5213 41.4237 32.734 41.4237Z" fill="white"/>
+                        <path d="M28.7425 43.6684C28.41 43.6689 28.0729 43.6169 27.7429 43.5087C26.0136 42.9478 24.1216 42.2226 21.9602 41.2933L22.6758 39.6296C24.7851 40.5367 26.6261 41.2422 28.3039 41.7865C28.926 41.9901 29.6011 41.7365 29.9508 41.1715L30.0706 40.984C30.2348 40.7207 30.3046 40.4069 30.2677 40.085L32.0667 39.8778C32.1501 40.6004 31.9849 41.3367 31.6023 41.9507L31.4841 42.1357C30.8832 43.1075 29.8366 43.6684 28.7425 43.6684Z" fill="white"/>
+                        <path d="M18.4694 18.4858C15.642 17.7899 13.4351 16.802 12.3713 16.2754L13.1748 14.6522C14.1724 15.1465 16.2428 16.0728 18.902 16.7272L18.4694 18.4858Z" fill="white"/>
+                        <path d="M7.76208 31.7138C6.74531 30.5859 5.65072 28.9349 4.91089 27.7483L6.44817 26.7902C7.02174 27.7109 8.13048 29.4175 9.10733 30.502L7.76208 31.7138Z" fill="white"/>
+                        <path d="M9.5267 36.018C8.52813 36.018 7.56644 35.5066 7.06564 34.605L7.03178 34.5368C6.69724 33.9223 6.63458 33.1284 6.87512 32.3901C7.09344 31.7366 7.40574 31.114 7.80598 30.5334C8.21481 29.927 8.74492 29.3256 9.37611 28.753C9.93301 28.2487 10.6572 27.9829 11.4011 28.0071C12.1899 28.0309 12.9398 28.3846 13.4578 28.9774C14.1062 29.7248 14.322 30.7719 14.0228 31.7134L12.2965 31.1646C12.4057 30.8209 12.3274 30.4384 12.0919 30.167C11.9034 29.9512 11.6376 29.8264 11.346 29.8173C11.0695 29.8198 10.7997 29.9073 10.592 30.0953C10.0695 30.5693 9.63485 31.0605 9.30233 31.5537C8.99356 32.0014 8.75756 32.4714 8.59534 32.9571C8.51095 33.2153 8.52712 33.4963 8.63931 33.7035L8.66356 33.7515C8.93696 34.2437 9.59543 34.3144 10.0391 34.0805L10.88 35.6844C10.4485 35.9108 9.98354 36.018 9.5267 36.018Z" fill="white"/>
+                        <path d="M19.4594 43.862C19.373 43.862 19.286 43.8584 19.1996 43.8504C18.294 43.7695 17.5138 43.2834 17.059 42.5172L17.066 42.5127L17.0155 42.445C16.6688 41.8537 16.5829 41.0623 16.8012 40.3119C16.9786 39.712 17.2424 39.1273 17.5865 38.5694L19.1279 39.5205C18.8681 39.942 18.67 40.3796 18.5391 40.8213C18.4603 41.0932 18.482 41.3671 18.5998 41.5687L18.5983 41.5697L18.6164 41.5925C18.8277 41.9487 19.1733 42.0296 19.3608 42.0463C19.7151 42.0791 20.0653 41.9386 20.2957 41.6728C20.8016 41.0932 21.2195 40.4837 21.5616 39.9637C21.7259 39.7131 21.8906 39.4558 22.0559 39.1981C22.3106 38.7994 22.2656 38.2799 21.9452 37.9367C21.5556 37.5112 20.8547 37.5047 20.4453 37.9039C20.3857 37.959 20.3503 37.9949 20.3144 38.0333L18.9783 36.8113C19.0505 36.7315 19.1233 36.6592 19.2021 36.5869C19.7206 36.0811 20.4327 35.791 21.1857 35.791C21.9796 35.791 22.7406 36.1251 23.2748 36.7067C24.1536 37.6497 24.2819 39.0773 23.5815 40.1739C23.4127 40.4382 23.244 40.7005 23.0757 40.9577C22.6987 41.5303 22.2368 42.2029 21.6622 42.8614C21.1109 43.4976 20.3013 43.862 19.4594 43.862Z" fill="white"/>
+                        <path d="M11.9746 38.8146C11.7658 38.8146 11.5592 38.7944 11.357 38.7535C10.4691 38.5715 9.77172 37.9934 9.44375 37.1677L9.44779 37.1661L9.43162 37.1237L9.42657 37.1257C9.07788 36.2247 9.17339 35.1978 9.67621 34.4468C10.5105 33.2006 11.4935 32.0212 12.4445 30.8806C12.6714 30.6082 12.8978 30.3368 13.1217 30.0654C13.6751 29.3933 14.4589 28.9885 15.3286 28.9239C16.174 28.8582 16.9982 29.1295 17.587 29.6602C17.728 29.7875 17.8488 29.9214 17.9559 30.0705C18.7695 31.1914 18.6396 32.8737 17.639 34.1593C16.7243 35.3332 15.8112 36.5051 14.7211 37.6053L14.7201 37.6058C13.951 38.38 12.9423 38.8146 11.9746 38.8146ZM11.1175 36.4784L11.1266 36.4986C11.2312 36.7614 11.4252 36.9185 11.7204 36.9787C12.2611 37.0898 12.9332 36.8346 13.4355 36.3293C14.4493 35.3064 15.2891 34.228 16.1786 33.0869C16.7102 32.4037 16.8274 31.5987 16.4889 31.1322C16.4555 31.0858 16.4191 31.0463 16.3741 31.0054C16.1573 30.8098 15.8076 30.7027 15.462 30.7305C15.1992 30.7497 14.8217 30.8498 14.5195 31.2171C14.2936 31.491 14.0652 31.7655 13.8358 32.0404C12.9145 33.1451 11.9624 34.2872 11.1811 35.454C10.98 35.7547 11.0033 36.1817 11.1155 36.4718L11.1175 36.4784Z" fill="white"/>
+                        <path d="M15.3125 42.0124C15.1174 42.0124 14.9233 41.9943 14.7328 41.9584C13.8186 41.784 13.0869 41.2054 12.7251 40.3711L12.7079 40.3291L12.7064 40.3296C12.3956 39.5938 12.4269 38.6908 12.7928 37.8509C13.4583 36.3075 14.5549 34.892 16.1448 33.5271C17.4349 32.4194 19.2557 32.3516 20.3811 33.3659C20.5201 33.4912 20.6389 33.6216 20.745 33.7641C21.5753 34.8713 21.5015 36.5001 20.5631 37.721L20.5307 37.7629C19.7196 38.8166 18.8802 39.9067 17.8645 40.9234L17.8635 40.9244C17.1661 41.6208 16.2282 42.0124 15.3125 42.0124ZM14.3755 39.6267L14.3867 39.6504C14.5423 40.0087 14.8455 40.1356 15.0724 40.179C15.5768 40.2745 16.1554 40.0699 16.5839 39.6429C17.5168 38.7085 18.2839 37.7124 19.0955 36.6583L19.1274 36.6168C19.5721 36.0382 19.6403 35.31 19.2931 34.8471C19.2567 34.7981 19.2178 34.7556 19.1683 34.7111C18.717 34.3038 17.9246 34.3857 17.3253 34.9006C15.9487 36.0827 15.0097 37.2834 14.4549 38.571C14.2871 38.9556 14.2578 39.3482 14.375 39.6252L14.3755 39.6267Z" fill="white"/>
+                    </svg>
+                    <h4>We are Trusted</h4>
+                    <p>Consistency and integrity in every interaction</p>
+                </div>
+                <div class="usp-item" data-aos="fade-up">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none">
+                        <path d="M42.8438 24.1562C41.7535 23.0506 40.4725 22.1507 39.0626 21.5C40.0998 20.6425 40.9211 19.5533 41.4604 18.3203C41.9997 17.0872 42.2418 15.7448 42.1673 14.401C42.0928 13.0573 41.7038 11.7498 41.0315 10.584C40.3593 9.41808 39.4226 8.42639 38.2969 7.68876C37.1713 6.95113 35.8881 6.48818 34.5508 6.33721C33.2135 6.18623 31.8594 6.35145 30.5976 6.81955C29.3359 7.28765 28.2017 8.04556 27.2864 9.03221C26.3711 10.0189 25.7004 11.2067 25.3282 12.5H24.6719C24.2997 11.2067 23.629 10.0189 22.7137 9.03221C21.7985 8.04556 20.6643 7.28765 19.4025 6.81955C18.1407 6.35145 16.7866 6.18623 15.4493 6.33721C14.112 6.48818 12.8288 6.95113 11.7032 7.68876C10.5775 8.42639 9.64084 9.41808 8.96859 10.584C8.29633 11.7498 7.90729 13.0573 7.8328 14.401C7.75831 15.7448 8.00045 17.0872 8.53973 18.3203C9.079 19.5533 9.90033 20.6425 10.9376 21.5C8.65814 22.5351 6.72606 24.2062 5.37344 26.3128C4.02082 28.4193 3.3052 30.8716 3.31256 33.375C3.31255 33.918 3.41976 34.4557 3.62804 34.9572C3.83632 35.4587 4.14156 35.9141 4.52626 36.2974C4.91096 36.6806 5.36754 36.9841 5.86981 37.1905C6.37209 37.3969 6.91017 37.5021 7.45318 37.5H12.1407C12.0149 38.2013 11.9521 38.9125 11.9532 39.625C11.9531 40.7136 12.3835 41.7581 13.1503 42.5308C13.9171 43.3035 14.9583 43.7418 16.0469 43.75H33.9532C35.0445 43.7459 36.0897 43.3094 36.8599 42.5363C37.6301 41.7632 38.0626 40.7163 38.0626 39.625C38.0636 38.9125 38.0008 38.2013 37.8751 37.5H42.5626C43.6539 37.4959 44.6991 37.0594 45.4693 36.2863C46.2395 35.5132 46.6719 34.4663 46.6719 33.375C46.6744 31.6617 46.3374 29.9649 45.6803 28.3826C45.0233 26.8003 44.0592 25.3638 42.8438 24.1562ZM33.5938 9.375C35.0442 9.375 36.4352 9.95117 37.4608 10.9768C38.4864 12.0024 39.0626 13.3933 39.0626 14.8438C39.0626 16.2942 38.4864 17.6852 37.4608 18.7107C36.4352 19.7363 35.0442 20.3125 33.5938 20.3125C33.4547 18.7728 32.9021 17.2994 31.9945 16.0479C31.0869 14.7965 29.8579 13.8135 28.4376 13.2031C28.7877 12.1053 29.4738 11.1452 30.3989 10.4584C31.3241 9.77148 32.4417 9.39253 33.5938 9.375ZM30.4688 21.0938C30.4688 22.1754 30.1481 23.2327 29.5472 24.132C28.9462 25.0314 28.0921 25.7323 27.0929 26.1462C26.0936 26.5601 24.994 26.6684 23.9332 26.4574C22.8723 26.2464 21.8979 25.7256 21.1331 24.9607C20.3682 24.1959 19.8474 23.2215 19.6364 22.1607C19.4254 21.0998 19.5337 20.0002 19.9476 19.001C20.3615 18.0017 21.0625 17.1476 21.9618 16.5467C22.8611 15.9457 23.9184 15.625 25.0001 15.625C26.4505 15.625 27.8415 16.2012 28.867 17.2268C29.8926 18.2523 30.4688 19.6433 30.4688 21.0938ZM10.9376 14.8438C10.9231 13.5308 11.3828 12.2567 12.2323 11.2555C13.0818 10.2543 14.264 9.59326 15.5618 9.39375C16.8595 9.19424 18.1857 9.46968 19.2967 10.1695C20.4077 10.8693 21.2289 11.9465 21.6094 13.2031C20.1891 13.8135 18.9601 14.7965 18.0525 16.0479C17.1448 17.2994 16.5923 18.7728 16.4532 20.3125C15.7311 20.3187 15.0149 20.1818 14.346 19.9097C13.6771 19.6377 13.0686 19.2358 12.5559 18.7274C12.0431 18.219 11.636 17.614 11.3583 16.9474C11.0805 16.2809 10.9375 15.5659 10.9376 14.8438ZM7.45318 34.375C7.19068 34.3709 6.94032 34.2637 6.75615 34.0766C6.57198 33.8895 6.46877 33.6375 6.46881 33.375C6.46675 32.0694 6.72238 30.7763 7.22106 29.5697C7.71974 28.363 8.45165 27.2667 9.37484 26.3435C10.298 25.4203 11.3944 24.6884 12.601 24.1898C13.8076 23.6911 15.1007 23.4354 16.4063 23.4375H16.7501C17.231 25.1254 18.2181 26.6251 19.5782 27.7344C16.6675 29.0822 14.3462 31.4424 13.0469 34.375H7.45318ZM34.0157 40.625H16.0469C15.7844 40.6209 15.5341 40.5137 15.3499 40.3266C15.1657 40.1395 15.0625 39.8875 15.0626 39.625C15.0626 36.9894 16.1095 34.4618 17.9732 32.5981C19.8368 30.7345 22.3645 29.6875 25.0001 29.6875C27.6356 29.6875 30.1633 30.7345 32.0269 32.5981C33.8906 34.4618 34.9376 36.9894 34.9376 39.625C34.9376 39.8875 34.8344 40.1395 34.6502 40.3266C34.466 40.5137 34.2157 40.6209 33.9532 40.625H34.0157ZM42.6094 34.375H36.9532C35.6508 31.4482 33.3299 29.094 30.4219 27.75C31.7847 26.6366 32.772 25.1311 33.2501 23.4375H33.5938C36.2281 23.4416 38.7534 24.4899 40.6161 26.3527C42.4789 28.2154 43.5272 30.7407 43.5313 33.375C43.5313 33.6375 43.4281 33.8895 43.244 34.0766C43.0598 34.2637 42.8094 34.3709 42.5469 34.375H42.6094Z" fill="white"/>
+                    </svg>
+                    <h4>We are a Team</h4>
+                    <p>Coming together through action and accountability</p>
+                </div>
+            </div>
+        </div><!-- end container -->
+    </div><!-- brand search wrapper -->
+
+</section>
+
+
+<div class="mobile-brand-search-wrapper">
+
+    <a class="close-btn"><i class="fa-solid fa-xmark"></i></a>
+
+    <form id="brands-search-form-mobile" action="<?php echo home_url('/our-stock') ?>" class="brands-search-form mobile form-control">         
+
+        <div class="form-group">
+                            <select name="make-mobile" id="make-mobile" class="form-control">
+                                <option value="" selected>Make</option>
+                                <?php 
+                                    foreach ($brands as $brand) { ?>
+                                    <option value="_make-<?php echo $brand->slug?>"><?php echo $brand->name?></option>
+                                <?php }?>
+                                
+                            </select>
+                        </div><!-- end group -->
+
+
+                    <!-- <div class="form-group">
+                        <select class="form-control">
+                            <option value="" selected>Select Brand</option>                            
+                        </select> -->
+                    <!-- </div> --> <!-- end group -->
+
+
+                    <div class="form-group">
+                        <select name="body-mobile" id="body-mobile" class="form-control">
+                            <option value="" selected>Body Type</option>   
+                            <option value="_body-camper-trailer">Camper Trailer</option>                           
+                            <option value="_body-caravan" >Caravan</option>                           
+                            <option value="_body-hybrid" >Hybrid</option>                           
+                            <option value="_body-poptop" >Pop Top</option>                           
+                            <option value="_body-pop-top-hybrid" >Pop Top Hybrid</option>                           
+                        </select>
+                    </div><!-- end group -->
+
+                    <div class="form-group">
+                        <select name="sleeps-mobile" id="sleeps-mobile" class="form-control">
+                            <option value="" selected>Sleeps</option>
+                            <option value="_sleeps-2">2</option>   
+                            <option value="_sleeps-3">3</option>   
+                            <option value="_sleeps-4">4</option>   
+                            <option value="_sleeps-5">5</option>                                
+                            <option value="_sleeps-6">6</option>                                
+                            <option value="_sleeps-7">7</option>                                
+                        </select>
+                    </div><!-- end group -->
+
+                    <div class="form-group">
+                        <select name="price-mobile" id="price-mobile" class="form-control">
+                            <option value="" selected>Price Range</option>
+                            <option value="30000">$30,000</option>   
+                            <option value="40000">$40,000</option>   
+                            <option value="50000">$50,000</option>   
+                            <option value="60000">$60,000</option>   
+                            <option value="70000">$70,000</option>   
+                            <option value="80000">$80,000</option>   
+                            <option value="90000">$90,000</option>   
+                            <option value="100000">$100,000</option>   
+                        </select>
+                    </div><!-- end group -->
+        
+            <button type="submit">Search Items</button>
+        </form>
+</div>
+
+
+
+
+<!-- 
+<pre>
+    <?php // print_r($customFieldValues) ?>
+</pre> -->
+
+<!-- <pre>
+    <?php // print_r($brands) ?>
+</pre> -->
+
+
+
+
+
+<script>
+    // Add hashtag to the end of url to point to the list container - DESKTOP
+    document.getElementById("brands-search-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent the form from submitting in the default way
+
+    const makeValue = document.getElementById("make").value;
+    const bodyValue = document.getElementById("body").value;
+    const sleepsValue = document.getElementById("sleeps").value;
+    const priceValue = document.getElementById("price").value;
+    // const url = "<?php echo home_url('/our-stock/') ?>" + encodeURIComponent(makeValue) + encodeURIComponent(bodyValue) + encodeURIComponent(sleepsValue) + "#list";
+
+    // Redirect to the generated URL
+    // window.location.href = url;
+
+
+    ///////
+
+    // Build the URL with parameters only if values are provided
+    var resultUrl = '<?php echo home_url('/our-stock/') ?>';
+
+    if (makeValue !== '') {
+        resultUrl += encodeURIComponent(makeValue) + "/";
+    }
+
+    if (bodyValue !== '') {
+        resultUrl += encodeURIComponent(bodyValue) + "/";
+    }
+
+    if (sleepsValue !== '') {
+        resultUrl += encodeURIComponent(sleepsValue);
+    }
+
+    if (priceValue !== '') {
+        resultUrl += '?max__price=' + encodeURIComponent(priceValue);
+    }
+
+
+    resultUrl += "#list"
+
+    // Redirect to the generated URL
+    window.location.href = resultUrl;
+
+    });
+
+</script>
+
+<script>
+    // Add hashtag to the end of url to point to the list container - MOBILE
+    document.getElementById("brands-search-form-mobile").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent the form from submitting in the default way
+
+    const makeValue = document.getElementById("make-mobile").value;
+    const bodyValue = document.getElementById("body-mobile").value;
+    const sleepsValue = document.getElementById("sleeps-mobile").value;
+    const priceValue = document.getElementById("price-mobile").value;
+
+    // Redirect to the generated URL
+    // window.location.href = url;
+
+
+    ///////
+
+    // Build the URL with parameters only if values are provided
+    var mobileResultUrl = '<?php echo home_url('/our-stock/') ?>';
+
+    if (makeValue !== '') {
+        mobileResultUrl += encodeURIComponent(makeValue) + "/";
+    }
+
+    if (bodyValue !== '') {
+        mobileResultUrl += encodeURIComponent(bodyValue) + "/";
+    }
+
+    if (sleepsValue !== '') {
+        mobileResultUrl += encodeURIComponent(sleepsValue);
+    }
+
+    if (priceValue !== '') {
+        mobileResultUrl += '?max__price=' + encodeURIComponent(priceValue);
+    }
+
+
+    mobileResultUrl += "#list"
+
+    // Redirect to the generated URL
+    window.location.href = mobileResultUrl;
+
+    });
+
+</script><!-- end MOBILE search form -->
+
+
+
+<script>// homepage slider
+    jQuery(document).ready(function($){
+        $('#homepage-slider').owlCarousel({
+        items:1,
+        autoplay: true,
+        loop:true,
+        touchDrag: false,
+        mouseDrag: false,
+        animateOut: 'fadeOut',
+        nav:false,
+        navText : ["&lt;","&gt;"],
+        // responsive : {
+        //     // breakpoint from 0 up
+        //     600 : {
+        //             nav:false,
+        //         }
+        //     }
+        });
+
+        document.querySelector('.homepage-hero .slider .owl-nav').classList.add('container');
+    });
+
+</script>
+
+
+<script>// mobile brand search
+    let mobileBtn = document.querySelector('.brands-search.mobile .search-btn');
+    let mobileCloseBtn = document.querySelector('.mobile-brand-search-wrapper .close-btn');
+    let mobileSearchWrapper = document.querySelector('.mobile-brand-search-wrapper');
+
+    mobileBtn.addEventListener('click', function(){
+        mobileSearchWrapper.style.display = "block";
+        document.body.classList.add('disable-scroll');
+    });
+
+    mobileCloseBtn.addEventListener('click', function(){
+        mobileSearchWrapper.style.display = "none"
+        document.body.classList.remove('disable-scroll')
+    });
+
+</script>
+
+
