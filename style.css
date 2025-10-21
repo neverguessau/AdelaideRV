@@ -1128,7 +1128,8 @@ div.wpforms-container .wpforms-form .wpforms-field-layout .wpforms-layout-column
 
 .homepage-hero .slider .item {
 	min-height:650px;
-	height: 70vh;
+	/*height: 70vh;*/
+	height: 890px;
 	position: relative;
 }
 
@@ -1172,7 +1173,8 @@ div.wpforms-container .wpforms-form .wpforms-field-layout .wpforms-layout-column
 
 @media (max-width: 1024px) {
 	.homepage-hero .slider .item {
-		height: 80vh;
+		/*height: 80vh;*/
+		height: 1000px;
 	}
 }
 
@@ -1182,7 +1184,7 @@ div.wpforms-container .wpforms-form .wpforms-field-layout .wpforms-layout-column
 	}
 
 	.homepage-hero .slider .item {
-		height: 1060px;
+		height: 960px;
 	}
 }
 
