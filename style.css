@@ -1420,14 +1420,14 @@ form#brands-search-form > :last-child {
     width: 100%;
 }
 
-.homepage-hero .brand-search-wrapper .usp-container {
+.usp-container {
     display: flex;
     flex-direction: row;
     margin-top: 63px;
     position: relative;
 }
 
-.homepage-hero .brand-search-wrapper .usp-container .usp-item {
+.usp-container .usp-item {
     width: 25%;
     padding: 0 50px;
     color: #fff;
@@ -1437,27 +1437,32 @@ form#brands-search-form > :last-child {
     align-items: center;
 }
 
-.homepage-hero .brand-search-wrapper .usp-container .usp-item:not(:last-child) {
+.usp-container .usp-item:not(:last-child) {
     border-right: 1px solid #fff;
 }
 
-.homepage-hero .brand-search-wrapper .usp-container .owl-nav {
+.usp-container .owl-nav {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
 }
 
-.homepage-hero .brand-search-wrapper .usp-container .owl-nav button.owl-next {
+.usp-container .owl-nav button.owl-prev {
+    position: absolute;
+    left: 0;
+}
+
+.usp-container .owl-nav button.owl-next {
     position: absolute;
     right: 0;
 }
 
-.homepage-hero .brand-search-wrapper .usp-container .owl-nav button.owl-next, .homepage-hero .brand-search-wrapper .usp-container .owl-nav button.owl-prev {
+.usp-container .owl-nav button.owl-next, .usp-container .owl-nav button.owl-prev {
     background: none;
     border: none;
 }
 
-.homepage-hero .brand-search-wrapper .usp-container .usp-item h4 {
+.usp-container .usp-item h4 {
     color: #FFF;
     /* font-family: "FONTSPRING DEMO - Obvia"; */
     font-size: 24px;
@@ -1467,7 +1472,7 @@ form#brands-search-form > :last-child {
     margin: 12px 0 10px;
 }
 
-.homepage-hero .brand-search-wrapper .usp-container .usp-item p {
+.usp-container .usp-item p {
     color: #FFF;
     text-align: center;
     font-size: 16px;
@@ -1491,11 +1496,11 @@ form#brands-search-form > :last-child {
         text-align: center;
     }
 
-    .homepage-hero .brand-search-wrapper .usp-container .owl-stage {
+    .usp-container .owl-stage {
         display: flex;
     }
 
-    .homepage-hero .brand-search-wrapper .usp-container .usp-item {
+    .usp-container .usp-item {
         width: 100%;
     }
 }
