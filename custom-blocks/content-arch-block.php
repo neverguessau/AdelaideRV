@@ -1,4 +1,7 @@
-<section class="curvy-content-wrapper content-arch <?php the_field('classes') ?>">
+<?php
+$post_slug = get_post_field( 'post_name', get_post() );
+?>
+<section class="curvy-content-wrapper content-arch <?php the_field('classes') ?> <?php echo esc_attr( $post_slug ); ?>">
     <div class="content-arch-container curvy-container container">
         <div class="container" data-aos="fade-up">
             <div class="row">
