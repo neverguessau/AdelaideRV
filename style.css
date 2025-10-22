@@ -1392,6 +1392,7 @@ form#brands-search-form {
     border: none;
     padding: 30px 20px;
     min-width: 445px;
+    max-width: 548px;
 }
 
 form#brands-search-form select {
@@ -1647,7 +1648,7 @@ form#brands-search-form > :last-child {
     }
 
     .brands-search-form .form-group::after {
-        right: 8px;
+        right: 20px;
     }
 }
 
@@ -5614,6 +5615,10 @@ section.page-banner.our-stock .lpb-cta-group {
     margin-top: 22px;
 }
 
+.our-stock .content-arch-container{
+    max-width: 100%;
+}
+
 @media (max-width: 767px){
     section.page-banner.our-stock {
         height: 640px;
@@ -5741,6 +5746,12 @@ section.page-banner.contact-us .content > .lpb-banner-form input, section.page-b
     background: var(--White, #FFF);
 }
 
+section.page-banner.contact-us .content > .lpb-banner-form input, section.page-banner.contact-us .content > .lpb-banner-form textarea,
+section.page-banner.contact-us .content > .lpb-banner-form .hsfc-DropdownOptions__List__ListItem, section.page-banner.contact-us .content > .lpb-banner-form input[type="tel"],
+section.page-banner.contact-us .content > .lpb-banner-form .hsfc-PhoneInput__FlagAndCaret{
+    font-size: 20px;
+}
+
 section.page-banner.contact-us .content > .lpb-banner-form input[type="tel"] {
     border-radius: 0 11px 11px 0;
 }
@@ -5764,6 +5775,25 @@ section.page-banner.contact-us .content > .lpb-banner-form button[type="submit"]
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+}
+
+section.page-banner.contact-us .lpb-banner-form .hsfc-ErrorAlert {
+    font-size: 12px;
+    margin-top: -8px;
+}
+
+section.contact-form-section.contact_us {
+    background: none;
+}
+
+section.page-banner.contact-us .content > .lpb-banner-form .hsfc-PostSubmit span {
+    padding: 10px;
+    font-size: 25px!important;
+    font-weight: 800!important;
+    /* border-radius: 15px; */
+    line-height: 34px;
+    background: none!important;
+    color: #000!important;
 }
 
 @media screen and (max-width: 1023px) {
@@ -5809,8 +5839,7 @@ section.page-banner.contact-us .content > .lpb-banner-form button[type="submit"]
         font-size: 16px;
         margin-bottom: 6px;
     }
-    button#cca8c23a-97da-4e98-b5fb-bd81ee608d06-15 {}
-    .lpb-banner-form button[type="submit"] {
+    section.page-banner.contact-us .content > .lpb-banner-form button[type="submit"] {
         font-size: 16px;
     }
 }
@@ -5821,6 +5850,12 @@ section.page-banner.contact-us .content > .lpb-banner-form button[type="submit"]
     }
     section.page-banner.contact-us {
         height: 1300px;
+    }
+    section.page-banner.contact-us .lpb-banner-form .form-wrapper {
+        padding: 30px 20px;
+    }
+    section.page-banner.contact-us .content > .lpb-banner-form .hsfc-PostSubmit span {
+        font-size: 20px!important;
     }
 }
 
