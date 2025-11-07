@@ -2,7 +2,9 @@
 $post_slug = get_post_field( 'post_name', get_post() );
 ?>
 <style>
-    section.curvy-content-wrapper.leader-caravans, section.curvy-content-wrapper.supreme-caravans, section.curvy-content-wrapper.goldstream-rv {
+    section.curvy-content-wrapper.leader-caravans, section.curvy-content-wrapper.supreme-caravans, section.curvy-content-wrapper.goldstream-rv,
+    section.curvy-content-wrapper.our-stock, section.curvy-content-wrapper.our-brands, section.curvy-content-wrapper.adelaide-rv-service-centre,
+    section.curvy-content-wrapper.information-hub{
         display: none;
     }
 </style>

@@ -1626,12 +1626,13 @@ form#brands-search-form > :last-child {
 }
 
 .brands-search-form .form-group::after {
-    content: "\f078";
+    content: "⌄";
     position: absolute;
     top: 50%;
     right: 15px;
     color: #555;
     pointer-events: none;
+    font-size: 20px;
     /* background-color: red; */
     font-family: 'FontAwesome';
     transform: translateY(-50%);
@@ -5590,6 +5591,33 @@ div#enquiryModal .modal-dialog .modal-body label.wpforms-error {
     margin-left: 2.5rem;
 }
 
+
+section.page-banner.leader-caravans, section.page-banner.supreme-caravans, section.page-banner.goldstream-rv,
+section.page-banner.our-stock, section.page-banner.our-brands, section.page-banner.adelaide-rv-service-centre,
+section.page-banner.information-hub{
+    height: 760px;
+}
+
+section.page-banner.leader-caravans::before, section.page-banner.supreme-caravans::before, section.page-banner.goldstream-rv::before,
+section.page-banner.our-stock::before, section.page-banner.our-brands::before, section.page-banner.adelaide-rv-service-centre::before,
+section.page-banner.information-hub::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+    pointer-events: none;
+}
+
+section.page-banner.leader-caravans .content, section.page-banner.supreme-caravans .content, section.page-banner.goldstream-rv .content,
+section.page-banner.our-brands .content, section.page-banner.adelaide-rv-service-centre .content, section.page-banner.information-hub .content{
+    margin-top: 0;
+}
+
+
 /* Our Stock Start */
 section.page-banner.our-stock {
     height: 760px;
@@ -5858,7 +5886,9 @@ section.page-banner.contact-us .content > .lpb-banner-form .hsfc-PostSubmit span
         font-size: 20px!important;
     }
 }
-
+section.page-banner.contact-us-thank-you .page-title {
+    text-transform: none;
+}
 /* Contact Us End */
 
 /* CTA color classes selected via ACF */
