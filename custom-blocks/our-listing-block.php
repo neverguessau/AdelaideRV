@@ -67,27 +67,24 @@ if (!function_exists('arb_build_stock_gallery')) {
                     </div>
                 </div>
             </div>
+            <div class="thumbnails-carousel owl-carousel single-listings-item-carousel popup">
+                <?php
+                if ($stock_number) {
+                    for ($i = 2; $i <= 45; $i++) {
+                        $filename = $stock_number . "_{$i}.jpg";
+                        $filepath = $img_abs_base . $filename;
+                        $fileurl  = $img_url_base . '/' . $filename;
 
-            <div class="thumbnails">
-                <div class="owl-carousel single-listings-item-carousel popup">
-                    <?php
-                    if ($stock_number) {
-                        for ($i = 2; $i <= 45; $i++) {
-                            $filename = $stock_number . "_{$i}.jpg";
-                            $filepath = $img_abs_base . $filename;
-                            $fileurl  = $img_url_base . '/' . $filename;
-
-                            if (file_exists($filepath)) {
-                                echo '<div class="item">
+                        if (file_exists($filepath)) {
+                            echo '<div class="item">
                         <a class="gallery" href="' . esc_url($fileurl) . '">
                           <img src="' . esc_url($fileurl) . '" alt="' . esc_attr(get_the_title($post_id)) . '" loading="lazy">
                         </a>
                       </div>';
-                            }
                         }
                     }
-                    ?>
-                </div>
+                }
+                ?>
             </div>
         </div>
 
