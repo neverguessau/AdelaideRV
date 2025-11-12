@@ -5955,3 +5955,35 @@ section.page-banner .lpb-cta-group {
         font-size: 16px;
     }
 }
+
+/* Floating button on /listings */
+.floating-btn-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    padding: 8px 20px;
+    position: sticky;
+    bottom: 0;
+    z-index: 999;
+}
+
+.floating-btn-container.mobile-only a {
+    border: 1px solid #a9a9a9;
+}
+
+@media (max-width: 767px) {
+    div#enquiryModal .modal-dialog .modal-content {
+        width: 100%;
+    }
+    div#enquiryModal .modal-dialog .modal-body input {
+        width: 80%;
+        border-radius: 0 0.6875rem 0.6875rem 0;
+    }
+    div#enquiryModal .modal-dialog .modal-body .hsfc-PhoneInput__FlagAndCaret {
+        height: 38px;
+        width: 20%;
+    }
+    div#enquiryModal .modal-dialog .modal-body textarea {
+        width: 100%;
+    }
+}
