@@ -33,7 +33,118 @@ if (get_field('items_per_page')) {
         return ($headers && strpos($headers[0], '200 OK') !== false);
     }
 }
+
 ?>
+<?php
+if (!function_exists('arb_build_stock_gallery')) {
+    function arb_build_stock_gallery($post_id) {
+        $stock_number = get_field('stock_number', $post_id);
+        $na_img  = get_template_directory_uri() . '/img/not-available-1.webp';
+        $scope_id = 'alb-gallery-' . $post_id;
+
+        // Images live at https://adelaiderv.com.au/images/<file>.jpg
+        $img_path_relative = '/images';
+        $img_abs_base = rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $img_path_relative . '/';
+        $img_url_base = untrailingslashit( home_url( $img_path_relative ) );
+
+        // Main image
+        $main_filename = $stock_number . '_1.jpg';
+        $main_file = $img_abs_base . $main_filename;
+        $main_url  = $img_url_base . '/' . $main_filename;
+
+        ob_start(); ?>
+        <div id="<?php echo esc_attr($scope_id); ?>" class="our-listing-block--gallery">
+            <div class="featured">
+                <div class="main-image-wrapper popup">
+                    <div class="main-img">
+                        <?php if ($stock_number && file_exists($main_file)) { ?>
+                            <a class="gallery" href="<?php echo esc_url($main_url); ?>">
+                                <img src="<?php echo esc_url($main_url); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy">
+                            </a>
+                        <?php } else { ?>
+                            <img src="<?php echo esc_url($na_img); ?>" alt="featured" loading="lazy">
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="thumbnails">
+                <div class="owl-carousel single-listings-item-carousel popup">
+                    <?php
+                    if ($stock_number) {
+                        for ($i = 2; $i <= 45; $i++) {
+                            $filename = $stock_number . "_{$i}.jpg";
+                            $filepath = $img_abs_base . $filename;
+                            $fileurl  = $img_url_base . '/' . $filename;
+
+                            if (file_exists($filepath)) {
+                                echo '<div class="item">
+                        <a class="gallery" href="' . esc_url($fileurl) . '">
+                          <img src="' . esc_url($fileurl) . '" alt="' . esc_attr(get_the_title($post_id)) . '" loading="lazy">
+                        </a>
+                      </div>';
+                            }
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            jQuery(function($){
+                var $root = $('#<?php echo esc_js($scope_id); ?>');
+                var $carousel = $root.find('.owl-carousel.single-listings-item-carousel');
+
+                if ($carousel.length && !$carousel.data('owl-initialized')) {
+                    // Hide until Owl finishes to avoid flashing all thumbs
+                    $carousel.css('opacity', 0);
+
+                    $carousel.on('initialized.owl.carousel', function(){
+                        $(this).css('opacity', 1);
+                    });
+
+                    $carousel.owlCarousel({
+                        items: 4,
+                        margin: 10,
+                        nav: true,
+                        dots: false,
+                        responsive:{
+                            0:    { items: 2 },
+                            480:  { items: 3 },
+                            768:  { items: 4 },
+                            1024: { items: 4 }
+                        }
+                    }).data('owl-initialized', true);
+                }
+
+                if ($.fn.magnificPopup) {
+                    var $pop = $root.find('.popup');
+                    if ($pop.length && !$pop.data('mfp-bound')) {
+                        $pop.magnificPopup({
+                            delegate:'a.gallery',
+                            type:'image',
+                            gallery:{enabled:true}
+                        }).data('mfp-bound', true);
+                    }
+                }
+            });
+        </script>
+
+
+        <style>
+            #<?php echo esc_attr($scope_id); ?> .featured .main-img img { width: 100%; height: auto; display:block; }
+            #<?php echo esc_attr($scope_id); ?> .owl-carousel .item img { width: 100%; height: auto; display:block; }
+            /* Prevent layout jump before Owl init */
+            #<?php echo esc_attr($scope_id); ?> .thumbnails .owl-carousel { overflow: hidden; }
+        </style>
+        <?php
+        return ob_get_clean();
+    }
+}
+
+?>
+
 
 
 <section id="list" class="listings-section section-padding">
@@ -59,74 +170,7 @@ if (get_field('items_per_page')) {
                             <div class="item-wrapper">
 
                                 <div class="item-images">
-                                    <a href="<?php the_permalink(); ?>" title="View <?php the_title(); ?>">
-                                    <div class="featured">
-                                        <!-- https://adelaide-rv.redstarmedia.com.au/wp-content/uploads/csv/images/1053_1.jpg -->
-
-                                        <?php 
-                                        $img_path = "https://adelaiderv.com.au/images/"; 
-                                        $img_url_1 = $img_path . get_field('stock_number', get_the_ID()) . "_1.jpg";
-                                        $img_url_2 = $img_path . get_field('stock_number', get_the_ID()) . "_2.jpg";
-                                        $img_url_3 = $img_path . get_field('stock_number', get_the_ID()) . "_3.jpg";
-                                        $img_url_4 = $img_path . get_field('stock_number', get_the_ID()) . "_4.jpg";
-                                        $img_url_5 = $img_path . get_field('stock_number', get_the_ID()) . "_5.jpg";
-                                        // echo $img_url;
-                                        ?>
-
-                                        <?php // check if featured image url exists
-                                            $urlToCheck = $img_url_1;
-                                            if (urlExists($urlToCheck)) { ?>
-                                                 <img src="<?php echo $img_url_1;?>" alt="featured" loading="lazy">
-                                            <?php } else { ?>
-                                                <img src="<?php echo get_template_directory_uri() ?>/img/not-available-1.webp" alt="featured" loading="lazy">
-                                            <?php }
-                                        ?>
-
-                                    </div><!-- end featured -->
-
-                                    <div class="thumbnails">
-
-                                        <?php // check if image 2 url exists
-                                            $urlToCheck = $img_url_2;
-                                            if (urlExists($urlToCheck)) { ?>
-                                                 <img src="<?php echo $img_url_2;?>" alt="featured" loading="lazy">
-                                            <?php } else { ?>
-                                                <img src="<?php echo get_template_directory_uri() ?>/img/not-available-1.webp" alt="featured" loading="lazy">
-                                            <?php }
-                                        ?>               
-
-                                        <?php // check if image 3 url exists
-                                            $urlToCheck = $img_url_3;
-                                            if (urlExists($urlToCheck)) { ?>
-                                                 <img src="<?php echo $img_url_3;?>" alt="featured" loading="lazy">
-                                            <?php } else { ?>
-                                                <img src="<?php echo get_template_directory_uri() ?>/img/not-available-1.webp" alt="featured" loading="lazy">
-                                            <?php }
-                                        ?> 
-                                        
-                                        <?php // check if image 4 url exists
-                                            $urlToCheck = $img_url_4;
-                                            if (urlExists($urlToCheck)) { ?>
-                                                 <img src="<?php echo $img_url_4;?>" alt="featured" loading="lazy">
-                                            <?php } else { ?>
-                                                <img src="<?php echo get_template_directory_uri() ?>/img/not-available-1.webp" alt="featured" loading="lazy">
-                                            <?php }
-                                        ?>
-
-                                            <?php // check if image 5 url exists
-                                            $urlToCheck = $img_url_5;
-                                            if (urlExists($urlToCheck)) { ?>
-                                                 <img src="<?php echo $img_url_5;?>" alt="featured" loading="lazy">
-                                            <?php } else { ?>
-                                                <img src="<?php echo get_template_directory_uri() ?>/img/not-available-1.webp" alt="featured" loading="lazy">
-                                            <?php }
-                                        ?>
-
-                                        <!-- <img src="<?php //echo get_template_directory_uri() ?>/img/caravan-featured-image-sample-1.jpg" alt="thumbnail" loading="lazy">
-                                        <img src="<?php // echo get_template_directory_uri() ?>/img/caravan-featured-image-sample-1.jpg" alt="thumbnail" loading="lazy">
-                                        <img src="<?php // echo get_template_directory_uri() ?>/img/caravan-featured-image-sample-1.jpg" alt="thumbnail" loading="lazy"> -->
-                                    </div><!-- end thumbs -->
-                                    </a>
+                                        <?php echo arb_build_stock_gallery(get_the_ID()); ?>
                                 </div><!-- end item images -->
 
 
