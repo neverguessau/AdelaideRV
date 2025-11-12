@@ -5567,7 +5567,8 @@ div#enquiryModal .modal-dialog .modal-body input {
     border-radius: 0.6875rem;
     border: 1px solid var(--Grey-3, #D2D2D2) !important;
     background: var(--White, #FFF);
-    margin: 0.63rem 2.2rem;
+    font-size: 16px;
+    font-family: inherit;
 }
 
 div#enquiryModal .modal-dialog .modal-body .iti {
@@ -5580,15 +5581,28 @@ div#enquiryModal .modal-dialog .modal-body textarea {
     border-radius: 0.6875rem;
     border: 1px solid var(--Grey-3, #D2D2D2) !important;
     background: var(--White, #FFF);
-    margin: 0.63rem 2.2rem;
+    font-size: 16px;
+    font-family: inherit;
+}
+div#enquiryModal [data-hsfc-id=Renderer] .hsfc-Heading {
+    display: none;
+}
+
+
+div#enquiryModal [data-hsfc-id=Renderer] .hsfc-Step .hsfc-Step__Content {
+    padding: 0 20px;
 }
 
 div#enquiryModal div.wpforms-container-full .wpforms-form input.wpforms-field-medium, div#enquiryModal div.wpforms-container-full .wpforms-form select.wpforms-field-medium, div#enquiryModal div.wpforms-container-full .wpforms-form .wpforms-field-row.wpforms-field-medium {
     max-width: 46.5rem;
 }
 
-div#enquiryModal .modal-dialog .modal-body label.wpforms-error {
-    margin-left: 2.5rem;
+div#enquiryModal .modal-dialog .modal-body label.wpforms-error,div#enquiryModal [data-hsfc-id=Renderer] .hsfc-ErrorAlert {
+    color: red;
+    font-family: inherit;
+    font-size: 1.2rem;
+    font-style: normal;
+    line-height: 1.875rem;
 }
 
 
