@@ -61,5 +61,10 @@ if( $images ): ?>
     
 <?php endif; ?>
 
-
+<div class="floating-btn-container mobile-only">
+    <a href="tel:0882818889" class="btn-lg call-us-btn">Call Now</a>
+    <a href="#" class="btn-lg call-us-btn" data-bs-toggle="modal" data-bs-target="#enquiryModal">
+        Enquire Now
+    </a>
+</div>
 <?php get_footer();
