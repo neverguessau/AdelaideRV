@@ -5604,6 +5604,36 @@ div#enquiryModal .modal-dialog .modal-body label.wpforms-error,div#enquiryModal 
     font-style: normal;
     line-height: 1.875rem;
 }
+div#enquiryModal [data-hsfc-id=Renderer] .hsfc-PhoneInput:not(.hsfc-PhoneInput--rtl)>.hsfc-TextInput {
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    width: 86%;
+}
+
+
+div#enquiryModal [data-hsfc-id=Renderer] .hsfc-PhoneInput:not(.hsfc-PhoneInput--rtl) .hsfc-PhoneInput__FlagAndCaret {
+    padding: 0 10px;
+    border:1px solid var(--Grey-3, #D2D2D2) !important;
+}
+
+div#enquiryModal [data-hsfc-id=Renderer] .hsfc-Button {
+    color: #fff;
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    padding: 10px 20px;
+    font-family: "obvia", Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    text-transform: uppercase;
+    background-color: var(--green-primary);
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    -ms-border-radius: 30px;
+    -o-border-radius: 30px;
+}
 
 
 section.page-banner.leader-caravans, section.page-banner.supreme-caravans, section.page-banner.goldstream-rv,
