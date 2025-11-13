@@ -31,7 +31,6 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="form-wrapper">
-                    <script src="https://js-ap1.hsforms.net/forms/embed/developer/50319163.js" defer></script>
                     <div class="hs-form-html" data-region="ap1" data-form-id="0577d27c-205c-48fa-8075-4ca05517daed"
                          data-portal-id="50319163"></div>
                 </div>

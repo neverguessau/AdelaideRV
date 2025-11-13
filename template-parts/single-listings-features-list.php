@@ -87,7 +87,6 @@
                 // Renders WPForms form ID 3092
                 //echo do_shortcode( '[wpforms id="3092"]' );
                 ?>
-                <script src="https://js-ap1.hsforms.net/forms/embed/developer/50319163.js" defer></script>
                 <div class="hs-form-html" data-region="ap1" data-form-id="c8406297-d42f-443c-acd8-f41d6459069e" data-portal-id="50319163"></div>
             </div>
         </div>
