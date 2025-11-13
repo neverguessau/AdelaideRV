@@ -18,7 +18,7 @@
         display: none !important;
     }
 
-    /* get rid of built-in row spacing, let children flow inline */
+    /* let child rows flow inline */
     #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-Row,
     #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-NavigationRow {
         display: contents;
@@ -27,13 +27,16 @@
 
     /* single row container with cap at 450px */
     #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-Step .hsfc-Step__Content {
+        position: relative;            /* for absolute error placement */
         display: flex;
+        flex-wrap: nowrap;             /* prevent wrap when errors show */
         align-items: center;
         justify-content: center;
         gap: 0;
         max-width: 450px;
         margin: 0 auto;
         padding: 0 !important;
+        padding-bottom: 26px;          /* space reserved for error line */
     }
 
     /* input (left pill) */
@@ -51,14 +54,15 @@
         box-sizing: border-box;
     }
 
+    /* remove focus outline on input */
+    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-TextInput:focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
     /* consistent placeholder color */
     #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-EmailField .hsfc-TextInput::placeholder {
         color: #9aa3ad !important;
-    }
-
-    /* remove chrome on PhoneInput if present in other forms */
-    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-PhoneInput__FlagAndCaret {
-        border: 1px solid #cfcfcf !important;
     }
 
     /* button (right pill) */
@@ -88,41 +92,86 @@
         transform: none !important;
     }
 
-    /* validation text */
-    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-ErrorAlert {
-        font-size: 12px !important;
-        margin-top: 6px !important;
+    /* keep the error from breaking layout: pin it below the pill row */
+    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-NavigationRow__Alerts {
+        display: none !important;
+    }
+    /* reserve space under the pill for errors */
+    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-Step .hsfc-Step__Content {
+        padding-bottom: 26px !important;
     }
 
-    /* focus states for accessibility */
-    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-TextInput:focus,
-    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-Button:focus {
-        outline: 2px solid #577B59 !important;
-        outline-offset: 2px !important;
+    /* anchor the field-level error to the email field so it doesn't push the button */
+    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-EmailField {
+        position: relative;
     }
+    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-EmailField .hsfc-ErrorAlert {
+        position: absolute !important;
+        top: calc(100% + 6px);
+        left: 0;
+        width: 100%;
+        margin: 0 !important;
+        font-size: 12px !important;
+        line-height: 1.3 !important;
+    }
+
+    /* keep the input from showing focus outline */
+    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-TextInput:focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
 
     /* autofill neutralization (Chrome) */
     #mc_embed_shell input:-webkit-autofill {
         -webkit-box-shadow: 0 0 0 30px #fff inset !important;
         -webkit-text-fill-color: #21353a !important;
     }
+    /* keep space for the error line */
+    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-Step .hsfc-Step__Content {
+        padding-bottom: 26px !important;
+    }
 
-    /* responsive fallback: stack below 480px */
-    @media (max-width: 480px) {
-        #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-Step .hsfc-Step__Content {
-            flex-direction: column;
-            max-width: 100%;
-        }
-        #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-EmailField .hsfc-TextInput {
-            width: 100%;
-            border-radius: 28px !important;
-            border-right: 1px solid #cfcfcf !important;
-            margin-bottom: 8px;
-        }
-        #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-NavigationRow__Buttons [data-hsfc-id=Button].hsfc-Button {
-            width: 100%;
-            border-radius: 28px !important;
-        }
+    /* pull any field-level error out of the flex row */
+    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-Step .hsfc-Step__Content > .hsfc-ErrorAlert,
+    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-EmailField .hsfc-ErrorAlert {
+        position: absolute !important;
+        left: 0;
+        top: calc(48px + 6px);
+        width: 100%;
+        margin: 0 !important;
+        font-size: 12px !important;
+        line-height: 1.3 !important;
+    }
+    /* 1) Make the email field the positioning context */
+    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-EmailField {
+        position: relative !important;
+    }
+
+    /* 2) Absolutely position the field-level error so it doesn't affect layout */
+    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-EmailField .hsfc-ErrorAlert {
+        position: absolute !important;
+        left: 0;
+        top: calc(100% + 6px);
+        width: 100%;
+        margin: 0 !important;
+        line-height: 1.3 !important;
+    }
+
+    /* 3) Kill HubSpot’s default “gap between siblings” inside the EmailField */
+    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-EmailField > *:not(:last-child) {
+        margin-bottom: 0 !important;
+    }
+
+    /* 4) Reserve space under the pill row for the error line */
+    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-Step .hsfc-Step__Content {
+        padding-bottom: 28px !important;
+    }
+
+    [data-hsfc-id=Renderer] .hsfc-RichText p {
+        background: white;
+        border-radius: 5px;
+        padding: 1em;
     }
 
 </style>
