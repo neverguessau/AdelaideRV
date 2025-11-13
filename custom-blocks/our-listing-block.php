@@ -2,26 +2,65 @@
 // Get pagination value from ACF field 
 $numPerPage = 6;
 if (get_field('items_per_page')) {
-    $numPerPage = get_field('items_per_page'); 
-  }
+    $numPerPage = get_field('items_per_page');
+}
 ?>
 
-<?php 
-    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+<?php
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
-    $args = array(  
+$args = array(
+    'post_type'      => 'listings',
+    'post_status'    => 'publish',
+    'posts_per_page' => $numPerPage,
+    'paged'          => $paged,
+
+    'meta_query' => array(
+        'relation' => 'OR',
+
+        // 1) Real numeric year values
+        'year_clause' => array(
+            'key'     => 'year',
+            'compare' => 'EXISTS',
+            'type'    => 'NUMERIC',
+        ),
+
+        // 2) No year field saved at all
+        array(
+            'key'     => 'year',
+            'compare' => 'NOT EXISTS',
+        ),
+
+        // 3) Year field exists but is empty string (ACF sometimes stores this)
+        array(
+            'key'     => 'year',
+            'value'   => '',
+            'compare' => '=',
+        ),
+    ),
+
+    'orderby' => array(
+        'year_clause' => 'DESC', // numeric years first, highest to lowest
+        'date'        => 'DESC', // tiebreaker
+    ),
+);
+
+
+/* This is the old sorting
+ * $args = array(
     'post_type' => 'listings',
     'post_status' => 'publish',
-    'posts_per_page' => $numPerPage, 
-    // 'orderby' => 'date', 
-    // 'order' => 'ASC', 
+    'posts_per_page' => $numPerPage,
+    // 'orderby' => 'date',
+    // 'order' => 'ASC',
     'paged' => $paged,
     'meta_key'       => 'stock_number',  // Custom field name
     'orderby'        => 'meta_value_num',  // Order by numeric value
     'order'          => 'DESC',  // ASC for ascending, DESC for descending
-    );
+);*/
 
-    $loop = new WP_Query( $args ); 
+$loop = new WP_Query( $args );
+
 ?>
 
 
