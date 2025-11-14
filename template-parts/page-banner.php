@@ -184,7 +184,6 @@ $post_slug = get_post_field( 'post_name', get_post() );
                     <?php if ($banner_form === 'contact_us') : ?>
                         <section class="contact-form-section contact_us">
                             <div class="form-wrapper">
-                                <script src="https://js-ap1.hsforms.net/forms/embed/developer/50319163.js" defer></script>
                                 <div class="hs-form-html" data-region="ap1"
                                      data-form-id="14d61550-0845-4a72-9f23-3d0205c40058" data-portal-id="50319163"></div>
                             </div>
@@ -192,7 +191,6 @@ $post_slug = get_post_field( 'post_name', get_post() );
                     <?php elseif ($banner_form === 'servicing') : ?>
                         <section class="contact-form-section servicing">
                             <div class="form-wrapper">
-                                <script src="https://js-ap1.hsforms.net/forms/embed/developer/50319163.js" defer></script>
                                 <div class="hs-form-html" data-region="ap1"
                                      data-form-id="2fa9e7fb-3ae2-4ddb-a3bb-b7b6b77bef12" data-portal-id="50319163"></div>
                             </div>

@@ -5639,6 +5639,13 @@ div#enquiryModal [data-hsfc-id=Renderer] .hsfc-Button {
     -ms-border-radius: 30px;
     -o-border-radius: 30px;
 }
+div#enquiryModal [data-hsfc-id=Renderer] .hsfc-DropdownOptions__List__ListItem {
+    font-size: 16px;
+}
+div#enquiryModal [data-hsfc-id=Renderer] .hsfc-RichText p span {
+    background-color: unset !important;
+    color: black !important;
+}
 
 
 section.page-banner.leader-caravans, section.page-banner.supreme-caravans, section.page-banner.goldstream-rv,
@@ -6011,7 +6018,7 @@ section.page-banner .lpb-cta-group {
         width: 100%;
     }
     div#enquiryModal .modal-dialog .modal-body input {
-        width: 80%;
+        /*width: 80%;*/
         border-radius: 0 0.6875rem 0.6875rem 0;
     }
     div#enquiryModal .modal-dialog .modal-body .hsfc-PhoneInput__FlagAndCaret {
