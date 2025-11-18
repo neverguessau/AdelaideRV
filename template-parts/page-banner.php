@@ -1,8 +1,8 @@
 <?php
-// Background image
-$featured_bg_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
-if (!$featured_bg_url) {
-    $featured_bg_url = get_template_directory_uri() . '/img/hero-slide-1.webp';
+if (get_the_post_thumbnail_url(get_the_ID(),'full')) {
+    $featured_bg_url = get_the_post_thumbnail_url(get_the_ID(),'full');
+} else {
+    $featured_bg_url = get_template_directory_uri().'/img/hero-slide-1.webp';
 }
 
 // ACF fields (all optional)
@@ -37,12 +37,16 @@ if ($has_form) {
 }
 $post_slug = get_post_field( 'post_name', get_post() );
 ?>
-<section class="<?php echo esc_attr($section_classes); ?> <?php echo esc_attr( $post_slug ); ?>">
-    <?php if (is_single() && get_field('brand_header_image')) : ?>
-        <img src="<?php echo esc_url(get_field('brand_header_image')); ?>" alt="<?php the_title_attribute(); ?>">
-    <?php else : ?>
-        <img src="<?php echo esc_url($featured_bg_url); ?>" alt="<?php the_title_attribute(); ?>">
-    <?php endif; ?>
+<section class="lovely <?php echo esc_attr($section_classes); ?> <?php echo esc_attr( $post_slug ); ?>">
+    <?php if (is_single()) { ?>
+        <?php if (get_field('brand_header_image')) { ?>
+            <img src="<?php the_field('brand_header_image'); ?>" alt="<?php the_title() ?>">
+        <?php } else { ?>
+            <img src="<?php echo get_template_directory_uri().'/img/hero-slide-1.webp' ?>" alt="<?php the_title_attribute() ?>">
+        <?php } ?>
+    <?php } else { ?>
+        <img src="<?php echo $featured_bg_url ?>" alt="<?php the_title_attribute() ?>">
+    <?php } ?>
 
     <div class="page-banner__inner<?php echo $has_form ? ' page-banner__inner--split' : ''; ?>">
 
