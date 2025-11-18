@@ -173,5 +173,8 @@
         border-radius: 5px;
         padding: 1em;
     }
+    #mc_embed_shell [data-hsfc-id=Renderer] .hsfc-NavigationRow__Buttons:has(>*:only-child){
+        justify-content: start !important;
+    }
 
 </style>
