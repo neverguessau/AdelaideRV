@@ -15,49 +15,13 @@ $args = array(
     'posts_per_page' => $numPerPage,
     'paged'          => $paged,
 
-    'meta_query' => array(
-        'relation' => 'OR',
-
-        // 1) Real numeric year values
-        'year_clause' => array(
-            'key'     => 'year',
-            'compare' => 'EXISTS',
-            'type'    => 'NUMERIC',
-        ),
-
-        // 2) No year field saved at all
-        array(
-            'key'     => 'year',
-            'compare' => 'NOT EXISTS',
-        ),
-
-        // 3) Year field exists but is empty string (ACF sometimes stores this)
-        array(
-            'key'     => 'year',
-            'value'   => '',
-            'compare' => '=',
-        ),
-    ),
-
-    'orderby' => array(
-        'year_clause' => 'DESC', // numeric years first, highest to lowest
-        'date'        => 'DESC', // tiebreaker
+    // Sort by year, numeric
+    'meta_key'       => 'year',
+    'orderby'        => array(
+        'meta_value_num' => 'DESC',
+        'date'           => 'DESC',
     ),
 );
-
-
-/* This is the old sorting
- * $args = array(
-    'post_type' => 'listings',
-    'post_status' => 'publish',
-    'posts_per_page' => $numPerPage,
-    // 'orderby' => 'date',
-    // 'order' => 'ASC',
-    'paged' => $paged,
-    'meta_key'       => 'stock_number',  // Custom field name
-    'orderby'        => 'meta_value_num',  // Order by numeric value
-    'order'          => 'DESC',  // ASC for ascending, DESC for descending
-);*/
 
 $loop = new WP_Query( $args );
 
@@ -65,7 +29,7 @@ $loop = new WP_Query( $args );
 
 
 <?php // check url existence function
-    if (!function_exists('urlExists')) {
+if (!function_exists('urlExists')) {
     function urlExists($url) {
         $headers = @get_headers($url);
         // If get_headers fails or the response code is not 200 OK, the URL does not exist
@@ -198,134 +162,134 @@ if (!function_exists('arb_build_stock_gallery')) {
             </div><!-- end col -->
 
             <div class="col-lg-9 col-md-8 ">
-            
+
                 <?php if ( $loop->have_posts() ) : ?>
-                <div class="right-col-container">    
-                    <div id="our_stock_list" class="list-wrapper">
-                        <?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
-                            <div class="item-wrapper">
+                    <div class="right-col-container">
+                        <div id="our_stock_list" class="list-wrapper">
+                            <?php while ( $loop->have_posts() ) : $loop->the_post(); ?>
+                                <div class="item-wrapper">
 
-                                <div class="item-images">
+                                    <div class="item-images">
                                         <?php echo arb_build_stock_gallery(get_the_ID()); ?>
-                                </div><!-- end item images -->
+                                    </div><!-- end item images -->
 
 
-                                <?php 
-                                        // Get the terms for the taxonomy 'your_taxonomy'
-                                        $terms = get_the_terms(get_the_ID(), 'make'); 
-                                ?>
+                                    <?php
+                                    // Get the terms for the taxonomy 'your_taxonomy'
+                                    $terms = get_the_terms(get_the_ID(), 'make');
+                                    ?>
 
-                                <div class="item-info">
-                                    <div class="title-price">
-                                        <div class="name-wrapper">
-                                            <h5 class="title">
-                                            <?php 
+                                    <div class="item-info">
+                                        <div class="title-price">
+                                            <div class="name-wrapper">
+                                                <h5 class="title">
+                                                    <?php
 
-                                                if ($terms && !is_wp_error($terms)) :
-                                                    foreach ($terms as $term) {
-                                                        // Display the taxonomy name
-                                                        echo $term->name;
-                                                    }   endif;
-                                                ?> 
-                                                <?php // the_title();?>
-                                            </h5>
-                                            <h6 class="subtitle"><?php the_field('year', get_the_ID()); ?> <?php the_title();?></h6>
-                                        </div><!-- end name wrapper -->
-                                        
-                                        <?php 
+                                                    if ($terms && !is_wp_error($terms)) :
+                                                        foreach ($terms as $term) {
+                                                            // Display the taxonomy name
+                                                            echo $term->name;
+                                                        }   endif;
+                                                    ?>
+                                                    <?php // the_title();?>
+                                                </h5>
+                                                <h6 class="subtitle"><?php the_field('year', get_the_ID()); ?> <?php the_title();?></h6>
+                                            </div><!-- end name wrapper -->
+
+                                            <?php
                                             $formatted_price = "";
                                             if (get_field('price', get_the_ID())) {
                                                 $price = get_field('price', get_the_ID());
-                                                $formatted_price = number_format($price, 0, '.', ','); 
+                                                $formatted_price = number_format($price, 0, '.', ',');
                                             }
-                                        ?>
-                                        <?php if ($formatted_price) { ?>
-                                            <h6 class="price">$<?php echo $formatted_price; ?></h6>
-                                        <?php } ?>
-                                        
-                                        
-                                    </div><!-- end title & price -->
-
-                                    <div class="tags-wrapper">
-
-                                        <ul class="tags">
-                                        <?php 
-
-                                            /*if ($terms && !is_wp_error($terms)) :
-                                                foreach ($terms as $term) {
-                                                    // Display the taxonomy name
-                                                    echo '<li title="Make">' . $term->name . '</li>';
-                                                }
-                                            endif;*/
-                                            ?>                                         
-                                            <?php if (get_field('body', get_the_ID())) { ?>
-                                                <li title="Body type"><?php the_field('body', get_the_ID());?></li>
+                                            ?>
+                                            <?php if ($formatted_price) { ?>
+                                                <h6 class="price">$<?php echo $formatted_price; ?></h6>
                                             <?php } ?>
 
-                                            <?php if (get_field('new_used', get_the_ID()) == "True") { ?>
-                                                <li title="Condition">Used</li>
-                                            <?php } else { ?>
-                                                <li title="Condition">New</li>
-                                            <?php } ?>
 
-                                            <?php if (get_field('shower', get_the_ID()) !=="") { ?>
-                                                <li title="Has shower">Shower</li>
-                                            <?php } ?>
+                                        </div><!-- end title & price -->
 
-                                            <?php if (get_field('toilet', get_the_ID()) !== "" && get_field('toilet', get_the_ID()) !== "No" ) { ?>
-                                                <li title="Has toilet">Toilet</li>
-                                            <?php } ?>
+                                        <div class="tags-wrapper">
 
-                                            <?php if (get_field('sleeping_capacity', get_the_ID()) !=="") { ?>
-                                                <li title="Sleeping capacity: <?php the_field('sleeping_capacity', get_the_ID()); ?>">Sleeps <?php the_field('sleeping_capacity', get_the_ID()); ?></li>
-                                            <?php } ?>
-                                        
-                                            
-                                        </ul>
-                                    </div><!-- end tags wrapper -->
-                                </div><!-- end item info --> 
+                                            <ul class="tags">
+                                                <?php
 
-                                <a href="<?php the_permalink(); ?>" class="btn-md btn-more">More Info</a>
+                                                /*if ($terms && !is_wp_error($terms)) :
+                                                    foreach ($terms as $term) {
+                                                        // Display the taxonomy name
+                                                        echo '<li title="Make">' . $term->name . '</li>';
+                                                    }
+                                                endif;*/
+                                                ?>
+                                                <?php if (get_field('body', get_the_ID())) { ?>
+                                                    <li title="Body type"><?php the_field('body', get_the_ID());?></li>
+                                                <?php } ?>
 
-                            </div><!-- end item wrapper -->
-                        <?php endwhile; wp_reset_postdata(); ?>
-                    </div><!-- end list wrapper -->
+                                                <?php if (get_field('new_used', get_the_ID()) == "True") { ?>
+                                                    <li title="Condition">Used</li>
+                                                <?php } else { ?>
+                                                    <li title="Condition">New</li>
+                                                <?php } ?>
 
-                     <!-- start pagination  -->
-                    <?php $total_pages = $loop->max_num_pages;
+                                                <?php if (get_field('shower', get_the_ID()) !=="") { ?>
+                                                    <li title="Has shower">Shower</li>
+                                                <?php } ?>
 
-                    if ($total_pages > 1) {  echo '<div class="pagination-container">';
+                                                <?php if (get_field('toilet', get_the_ID()) !== "" && get_field('toilet', get_the_ID()) !== "No" ) { ?>
+                                                    <li title="Has toilet">Toilet</li>
+                                                <?php } ?>
 
-                    $current_page = max(1, get_query_var('paged'));
+                                                <?php if (get_field('sleeping_capacity', get_the_ID()) !=="") { ?>
+                                                    <li title="Sleeping capacity: <?php the_field('sleeping_capacity', get_the_ID()); ?>">Sleeps <?php the_field('sleeping_capacity', get_the_ID()); ?></li>
+                                                <?php } ?>
 
-                    echo paginate_links(array(
-                        // 'base' => get_pagenum_link(1) . '%_%#list',
-                        // 'format' => 'page/%#%',
-                        'format'       => '?paged=%#%#list',
-                        'current' => $current_page,
-                        'total' => $total_pages,
-                        'prev_text'    => __('prev'),
-                        'next_text'    => __('next'),
-                    ));
 
-                        echo '</div>';
-                    } ?>
+                                            </ul>
+                                        </div><!-- end tags wrapper -->
+                                    </div><!-- end item info -->
 
-          
+                                    <a href="<?php the_permalink(); ?>" class="btn-md btn-more">More Info</a>
 
-                    <!-- end pagination -->
+                                </div><!-- end item wrapper -->
+                            <?php endwhile; wp_reset_postdata(); ?>
+                        </div><!-- end list wrapper -->
 
-                </div><!-- end right col container --> 
+                        <!-- start pagination  -->
+                        <?php $total_pages = $loop->max_num_pages;
+
+                        if ($total_pages > 1) {  echo '<div class="pagination-container">';
+
+                            $current_page = max(1, get_query_var('paged'));
+
+                            echo paginate_links(array(
+                                // 'base' => get_pagenum_link(1) . '%_%#list',
+                                // 'format' => 'page/%#%',
+                                'format'       => '?paged=%#%#list',
+                                'current' => $current_page,
+                                'total' => $total_pages,
+                                'prev_text'    => __('prev'),
+                                'next_text'    => __('next'),
+                            ));
+
+                            echo '</div>';
+                        } ?>
+
+
+
+                        <!-- end pagination -->
+
+                    </div><!-- end right col container -->
 
                 <?php else : ?>
                     <h5>Sorry, we could't find what you are looking for. Try something else.</h5>
                     <script>
                         setTimeout(function () {
-                        window.location.href= '<?php bloginfo('url') ?>/our-stock#list'; // the redirect goes here
+                            window.location.href= '<?php bloginfo('url') ?>/our-stock#list'; // the redirect goes here
 
                         },3000); // 5 seconds
                     </script>
-                <?php endif ?>          
+                <?php endif ?>
             </div><!-- end right col -->
         </div><!-- end row -->
     </div><!-- end container -->
@@ -336,7 +300,7 @@ if (!function_exists('arb_build_stock_gallery')) {
     const searchField = document.querySelector(".wpc-search-field");
     searchField.setAttribute("autocomplete", "off");
 
-    
+
     // START  SET EQUAL HEIGHT
 
     function titleEqualHeights() {
@@ -353,77 +317,77 @@ if (!function_exists('arb_build_stock_gallery')) {
         // Check if the viewport width is less than 991px
         if (viewportWidth > 991) {
 
-        // Find the maximum height among all elements
-        let maxHeight = 0;
-        titleElements.forEach((element) => {
-            const elementHeight = element.offsetHeight;
-            if (elementHeight > maxHeight) {
-            maxHeight = elementHeight;
-            }
-        });
+            // Find the maximum height among all elements
+            let maxHeight = 0;
+            titleElements.forEach((element) => {
+                const elementHeight = element.offsetHeight;
+                if (elementHeight > maxHeight) {
+                    maxHeight = elementHeight;
+                }
+            });
 
-        // Set the height of all elements to the maximum height
-        titleElements.forEach((element) => {
-            element.style.height = `${maxHeight}px`;
-        });
+            // Set the height of all elements to the maximum height
+            titleElements.forEach((element) => {
+                element.style.height = `${maxHeight}px`;
+            });
 
+        }
     }
-}
 
 
-// Call the function initially to set equal heights
-titleEqualHeights();
+    // Call the function initially to set equal heights
+    titleEqualHeights();
 
-// Call the function again whenever the window is resized
-window.addEventListener("resize", titleEqualHeights);
+    // Call the function again whenever the window is resized
+    window.addEventListener("resize", titleEqualHeights);
 
-/*** END TITLE HEIGHT ***/
+    /*** END TITLE HEIGHT ***/
 
 
 
 // START TAGS HEIGHT  *******************************************
 
-function tagsEqualHeights() {
+    function tagsEqualHeights() {
 
-    const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
-    // Get all elements with the class name "description"
-    const tagsElements = document.querySelectorAll(".tags-wrapper");
+        const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+        // Get all elements with the class name "description"
+        const tagsElements = document.querySelectorAll(".tags-wrapper");
 
-    // Reset heights to "auto" before calculating the new equal height
-    tagsElements.forEach((element) => {
-        element.style.height = "auto";
-    });
+        // Reset heights to "auto" before calculating the new equal height
+        tagsElements.forEach((element) => {
+            element.style.height = "auto";
+        });
 
-    // Check if the viewport width is less than 991px
-    if (viewportWidth > 991) {
+        // Check if the viewport width is less than 991px
+        if (viewportWidth > 991) {
 
-    // Find the maximum height among all elements
-    let maxHeight = 0;
-    tagsElements.forEach((element) => {
-        const elementHeight = element.offsetHeight;
-        if (elementHeight > maxHeight) {
-        maxHeight = elementHeight;
+            // Find the maximum height among all elements
+            let maxHeight = 0;
+            tagsElements.forEach((element) => {
+                const elementHeight = element.offsetHeight;
+                if (elementHeight > maxHeight) {
+                    maxHeight = elementHeight;
+                }
+            });
+
+            // Set the height of all elements to the maximum height
+            tagsElements.forEach((element) => {
+                element.style.height = `${maxHeight}px`;
+            });
+
         }
-    });
-
-    // Set the height of all elements to the maximum height
-    tagsElements.forEach((element) => {
-        element.style.height = `${maxHeight}px`;
-    });
 
     }
 
-}
+    // Call the function initially to set equal heights
+    tagsEqualHeights();
 
-// Call the function initially to set equal heights
-tagsEqualHeights();
+    // Call the function again whenever the window is resized
+    window.addEventListener("resize", tagsEqualHeights);
 
-// Call the function again whenever the window is resized
-window.addEventListener("resize", tagsEqualHeights);
+    // END TAGS HEIGHT ********************************************
 
-// END TAGS HEIGHT ********************************************
-
-/****** END SET EQUAL HEIGHT ****/
+    /****** END SET EQUAL HEIGHT ****/
 </script>
 
 
