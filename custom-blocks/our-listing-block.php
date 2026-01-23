@@ -226,10 +226,10 @@ if (!function_exists('arb_build_stock_gallery')) {
                                                     <li title="Body type"><?php the_field('body', get_the_ID());?></li>
                                                 <?php } ?>
 
-                                                <?php if (get_field('new_used', get_the_ID()) == "True") { ?>
-                                                    <li title="Condition">Used</li>
-                                                <?php } else { ?>
+                                                <?php if (get_field('new_used', get_the_ID()) == "New") { ?>
                                                     <li title="Condition">New</li>
+                                                <?php } else { ?>
+                                                    <li title="Condition">Pre-owned</li>
                                                 <?php } ?>
 
                                                 <?php if (get_field('shower', get_the_ID()) !=="") { ?>
