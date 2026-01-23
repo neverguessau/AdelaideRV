@@ -5363,7 +5363,7 @@ footer::before {
     justify-content: center;
     align-items: center;
     position: fixed;
-    bottom: 112px;
+    bottom: 100px;
     right: 30px;
     color: #fff;
     background-color: rgba(0, 0, 0, 0.5);
@@ -6028,18 +6028,4 @@ section.page-banner .lpb-cta-group {
     div#enquiryModal .modal-dialog .modal-body textarea {
         width: 100%;
     }
-
-    iframe#podium-bubble {
-        bottom: 30px!important;
-        height: 82px!Important;
-        z-index: 998!important;
-    }
-
 }
-
-@media (max-width: 375px) {
-    .floating-btn-container.mobile-only a {
-        font-size: 16px;
-    }
-}
-
