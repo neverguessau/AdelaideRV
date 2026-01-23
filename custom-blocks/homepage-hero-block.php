@@ -427,10 +427,6 @@ wp_reset_postdata();
         // Build the URL with parameters only if values are provided
         var resultUrl = '<?php echo home_url('/our-stock/') ?>';
 
-        if (typeValue !== '') {
-            resultUrl += encodeURIComponent(typeValue) + "/";
-        }
-
         if (makeValue !== '') {
             resultUrl += encodeURIComponent(makeValue) + "/";
         }
@@ -441,6 +437,10 @@ wp_reset_postdata();
 
         if (sleepsValue !== '') {
             resultUrl += encodeURIComponent(sleepsValue) + "/";
+        }
+
+        if (typeValue !== '') {
+            resultUrl += encodeURIComponent(typeValue) + "/";
         }
 
         if (priceValue !== '' && minPriceValue !== '') {
@@ -482,10 +482,6 @@ wp_reset_postdata();
         // Build the URL with parameters only if values are provided
         var mobileResultUrl = '<?php echo home_url('/our-stock/') ?>';
 
-        if (typeValue !== '') {
-            mobileResultUrl += encodeURIComponent(typeValue) + "/";
-        }
-
         if (makeValue !== '') {
             mobileResultUrl += encodeURIComponent(makeValue) + "/";
         }
@@ -496,6 +492,10 @@ wp_reset_postdata();
 
         if (sleepsValue !== '') {
             mobileResultUrl += encodeURIComponent(sleepsValue);
+        }
+
+        if (typeValue !== '') {
+            mobileResultUrl += encodeURIComponent(typeValue) + "/";
         }
 
         if (priceValue !== '' && minPriceValue !== '') {
