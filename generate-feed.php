@@ -136,7 +136,7 @@ try {
                 case 'ID':               $row[] = $vid; break;
                 case 'StockNumber':      $row[] = (string)$v['stock-number']; break;
                 case 'Year':             $row[] = (string)$v->dates['build-year']; break;
-                case 'IsUsed':           $row[] = ((string)$v['type'] === 'USED') ? 'True' : 'False'; break;
+                case 'IsUsed':           $row[] = ((string)$v['type'] === 'USED') ? 'Pre-owned' : 'New'; break;
                 case 'Price':            $row[] = (string)$v['asking-price']; break;
                 case 'body':             $row[] = (string)$v->model['body']; break;
                 case 'RegoNum':          $row[] = (string)$v->registration['plate']; break;
