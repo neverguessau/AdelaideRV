@@ -6042,4 +6042,6 @@ section.page-banner .lpb-cta-group {
         font-size: 16px;
     }
 }
-
+.wpc-filter-price form.wpc-form-without-slider .wpc-filters-range-values-wrapper {
+    display: none;
+}
