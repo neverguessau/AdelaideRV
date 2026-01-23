@@ -63,5 +63,10 @@ if ( $loop->have_posts() ) : ?>
         </div><!-- end row -->
     </div><!-- end container -->
 </section>
-
+    <div class="floating-btn-container mobile-only">
+        <a href="tel:0882818889" class="btn-lg call-us-btn">Call Now</a>
+        <a href="/contact-us/" class="btn-lg call-us-btn">
+            Enquire Now
+        </a>
+    </div>
 <?php  endif; ?>
