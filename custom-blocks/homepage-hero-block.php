@@ -198,6 +198,8 @@ wp_reset_postdata();
                                 <option value="80000">$80,000</option>
                                 <option value="90000">$90,000</option>
                                 <option value="100000">$100,000</option>
+                                <option value="100000">$125,000</option>
+                                <option value="100000">$150,000</option>
                             </select>
                         </div><!-- end group -->
 
