@@ -1492,6 +1492,10 @@ form#brands-search-form > :last-child {
     display: none;
 }
 
+.min-max-wrapper.mobile-only {
+    display: none;
+}
+
 @media (max-width: 1024px) {
     .homepage-hero .brand-search-wrapper h1 {
         text-align: center;
@@ -1525,6 +1529,11 @@ form#brands-search-form > :last-child {
 
     form#brands-search-form select, form#brands-search-form button {
         font-size: 16px;
+    }
+
+    .min-max-wrapper.mobile-only {
+        display: flex;
+        gap: 20px;
     }
 }
 
