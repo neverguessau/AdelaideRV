@@ -155,7 +155,7 @@ wp_reset_postdata();
                                 <!--<option value="_body-camper-trailer">Camper Trailer</option>-->
                                 <option value="_body-caravan">Caravan</option>
                                 <!--<option value="_body-hybrid">Hybrid</option>-->
-                                <option value="_body-poptop">Pop Top</option>
+                                <option value="_body-pop-top">Pop Top</option>
                                 <!--<option value="_body-pop-top-hybrid">Pop Top Hybrid</option>-->
                             </select>
                         </div><!-- end group -->
@@ -173,7 +173,7 @@ wp_reset_postdata();
                             </select>
                         </div><!-- end group -->
 
-                        <div class="form-group">
+                        <div class="form-group desktop-only">
                             <select name="min-price" id="min-price" class="form-control">
                                 <option value="" selected>Min Price</option>
                                 <option value="10000">$10,000</option>
@@ -187,7 +187,7 @@ wp_reset_postdata();
                             </select>
                         </div><!-- end group -->
 
-                        <div class="form-group">
+                        <div class="form-group desktop-only">
                             <select name="price" id="price" class="form-control">
                                 <option value="" selected>Max Price</option>
                                 <option value="30000">$30,000</option>
@@ -202,6 +202,38 @@ wp_reset_postdata();
                                 <option value="100000">$150,000</option>
                             </select>
                         </div><!-- end group -->
+
+                        <div class="min-max-wrapper mobile-only">
+                            <div class="form-group">
+                                <select name="min-price-mob" id="min-price-mob" class="form-control">
+                                    <option value="" selected>Min Price</option>
+                                    <option value="10000">$10,000</option>
+                                    <option value="20000">$20,000</option>
+                                    <option value="30000">$30,000</option>
+                                    <option value="40000">$40,000</option>
+                                    <option value="50000">$50,000</option>
+                                    <option value="60000">$60,000</option>
+                                    <option value="70000">$70,000</option>
+                                    <option value="80000">$80,000</option>
+                                </select>
+                            </div><!-- end group -->
+
+                            <div class="form-group">
+                                <select name="price-mob" id="price-mob" class="form-control">
+                                    <option value="" selected>Max Price</option>
+                                    <option value="30000">$30,000</option>
+                                    <option value="40000">$40,000</option>
+                                    <option value="50000">$50,000</option>
+                                    <option value="60000">$60,000</option>
+                                    <option value="70000">$70,000</option>
+                                    <option value="80000">$80,000</option>
+                                    <option value="90000">$90,000</option>
+                                    <option value="100000">$100,000</option>
+                                    <option value="100000">$125,000</option>
+                                    <option value="100000">$150,000</option>
+                                </select>
+                            </div>
+                        </div>
 
                         <button type="submit">Search Items</button>
 
@@ -343,7 +375,7 @@ wp_reset_postdata();
         <div class="form-group">
             <select name="body-mobile" id="body-mobile" class="form-control">
                 <option value="" selected>Body Type</option>
-<!--                <option value="_body-camper-trailer">Camper Trailer</option>-->
+                <!--                <option value="_body-camper-trailer">Camper Trailer</option>-->
                 <option value="_body-caravan">Caravan</option>
                 <!--<option value="_body-hybrid">Hybrid</option>-->
                 <option value="_body-poptop">Pop Top</option>
@@ -418,20 +450,17 @@ wp_reset_postdata();
         const sleepsValue = document.getElementById("sleeps").value;
         const priceValue = document.getElementById("price").value;
         const minPriceValue = document.getElementById("min-price").value;
+        const priceValueMob = document.getElementById("price-mob").value;
+        const minPriceValueMob = document.getElementById("min-price-mob").value;
         // const url = "<?php echo home_url('/our-stock/') ?>" + encodeURIComponent(makeValue) + encodeURIComponent(bodyValue) + encodeURIComponent(sleepsValue) + "#list";
 
         // Redirect to the generated URL
         // window.location.href = url;
 
 
-        ///////
 
         // Build the URL with parameters only if values are provided
         var resultUrl = '<?php echo home_url('/our-stock/') ?>';
-
-        if (typeValue !== '') {
-            resultUrl += encodeURIComponent(typeValue) + "/";
-        }
 
         if (makeValue !== '') {
             resultUrl += encodeURIComponent(makeValue) + "/";
@@ -445,6 +474,10 @@ wp_reset_postdata();
             resultUrl += encodeURIComponent(sleepsValue) + "/";
         }
 
+        if (typeValue !== '') {
+            resultUrl += encodeURIComponent(typeValue) + "/";
+        }
+
         if (priceValue !== '' && minPriceValue !== '') {
             resultUrl += '?max__price=' + encodeURIComponent(priceValue) + '&min__price=' + encodeURIComponent(minPriceValue);
         } else if (minPriceValue !== '') {
@@ -453,12 +486,20 @@ wp_reset_postdata();
             resultUrl += '?max__price=' + encodeURIComponent(priceValue);
         }
 
+        if (priceValueMob !== '' && minPriceValueMob !== '') {
+            resultUrl += '?max__price=' + encodeURIComponent(priceValueMob) + '&min__price=' + encodeURIComponent(minPriceValueMob);
+        } else if (minPriceValueMob !== '') {
+            resultUrl += '?min__price=' + encodeURIComponent(minPriceValueMob);
+        } else if (priceValueMob !== '') {
+            resultUrl += '?max__price=' + encodeURIComponent(priceValueMob);
+        }
+
 
         resultUrl += "#list"
 
         // Redirect to the generated URL
-        // window.location.href = resultUrl;
-        console.log(resultUrl);
+        window.location.href = resultUrl;
+        // console.log(resultUrl);
     });
 
 </script>
@@ -484,10 +525,6 @@ wp_reset_postdata();
         // Build the URL with parameters only if values are provided
         var mobileResultUrl = '<?php echo home_url('/our-stock/') ?>';
 
-        if (typeValue !== '') {
-            mobileResultUrl += encodeURIComponent(typeValue) + "/";
-        }
-
         if (makeValue !== '') {
             mobileResultUrl += encodeURIComponent(makeValue) + "/";
         }
@@ -498,6 +535,10 @@ wp_reset_postdata();
 
         if (sleepsValue !== '') {
             mobileResultUrl += encodeURIComponent(sleepsValue);
+        }
+
+        if (typeValue !== '') {
+            mobileResultUrl += encodeURIComponent(typeValue) + "/";
         }
 
         if (priceValue !== '' && minPriceValue !== '') {
