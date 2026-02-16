@@ -192,22 +192,16 @@ $post_slug = get_post_field( 'post_name', get_post() );
                                      data-form-id="14d61550-0845-4a72-9f23-3d0205c40058" data-portal-id="50319163"></div>
                             </div>
                         </section>
-                    <?php elseif ($banner_form === 'servicing') : ?>
-                        <section class="contact-form-section servicing">
+                    <?php elseif ($banner_form === 'information_hub') : ?>
+                        <section class="contact-form-section contact_us information_hub">
                             <div class="form-wrapper">
-                                <div class="hs-form-html" data-region="ap1"
-                                     data-form-id="2fa9e7fb-3ae2-4ddb-a3bb-b7b6b77bef12" data-portal-id="50319163"></div>
+                                <div class="hs-form-html" data-region="ap1" data-form-id="0577d27c-205c-48fa-8075-4ca05517daed" data-portal-id="50319163"></div>
                             </div>
                         </section>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
         </div><!-- /.content -->
-
-
-
-
-
     </div><!-- /.page-banner__inner -->
 
 
